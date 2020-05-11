@@ -171,7 +171,8 @@ This variable symbol is used for `--template' of `atcoder-tools'."
   (oj--exec-script
    (format "cd %s"
            (expand-file-name
-            contest (expand-file-name "atcoder" oj-home-dir)))))
+            "A" (expand-file-name
+                 contest (expand-file-name "atcoder" oj-home-dir))))))
 
 (provide 'oj)
 
