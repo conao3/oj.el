@@ -58,6 +58,15 @@ This variable symbol is used for `--template' of `atcoder-tools'."
            (const :tag "D" 'd)
            (const :tag "C#" 'cs)))
 
+(defvar oj-programming-languages
+  '((cpp    . ((raw . "C++")    (name . "cpp")    (ext . "cpp")))
+    (java   . ((raw . "Java")   (name . "java")   (ext . "java")))
+    (rust   . ((raw . "Rust")   (name . "rust")   (ext . "rs")))
+    (python . ((raw . "Python") (name . "python") (ext . "py")))
+    (nim    . ((raw . "Nim")    (name . "nim")    (ext . "nim")))
+    (d      . ((raw . "D")      (name . "d")      (ext . "d")))
+    (cs     . ((raw . "C#")     (name . "cs")     (ext . "cs")))))
+
 (defcustom oj-default-online-judge 'atcoder
   "Default online judge service."
   :group 'oj
@@ -164,10 +173,16 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 (defun oj-generate (contest)
   "Generate new CONTEST working folder."
   (interactive (list (read-string "Contest name (agc001): " nil nil "agc001")))
-  (oj--exec-script
-   (format "atcoder-tools gen %s --workspace %s --lang %s"
-           contest (expand-file-name "atcoder" oj-home-dir)
-           oj-default-programming-language))
+  (let-alist (alist-get oj-default-programming-language oj-programming-languages)
+    (oj--exec-script
+     (concat
+      (format "atcoder-tools gen %s --workspace %s --lang %s"
+              contest (expand-file-name "atcoder" oj-home-dir) .name)
+      (let ((file (expand-file-name
+                   (format "template/template.%s" .ext)
+                   oj-home-dir)))
+        (when (file-readable-p file)
+          (format " --template %s" file))))))
   (oj--exec-script
    (format "cd %s"
            (expand-file-name
