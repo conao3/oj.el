@@ -39,6 +39,11 @@
   :group 'oj
   :type 'string)
 
+(defcustom oj-home-dir (locate-user-emacs-file "oj")
+  "Directory path for `oj'."
+  :group 'oj
+  :type 'directory)
+
 
 ;;; Functions
 
