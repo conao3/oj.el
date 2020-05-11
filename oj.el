@@ -40,7 +40,7 @@
   :type 'string)
 
 
-;;; functions
+;;; Functions
 
 (defvar comint-process-echoes)
 (declare-function comint-send-input "comint")
@@ -61,6 +61,9 @@
     (comint-send-string oj-buffer "pip3 install online-judge-tools")
     (with-current-buffer oj-buffer
       (comint-send-input))))
+
+
+;;; Main
 
 (defun oj-open-shell ()
   "Open shell to controll `oj'."
