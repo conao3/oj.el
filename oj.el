@@ -49,6 +49,13 @@
 
 (defvar oj-buffer nil)
 
+(defun oj--exec-script (script)
+  "Exec SCRIPT in `oj-buffer'."
+  (oj-open-shell)
+  (comint-send-string oj-buffer script)
+  (with-current-buffer oj-buffer
+    (comint-send-input)))
+
 (defun oj--install-package-maybe ()
   "Install `oj' pip package via `pip3'."
   (unless (executable-find "oj")
@@ -58,9 +65,7 @@
       (error "Missing `python3.'  Please ensure Emacs's PATH and the installing"))
     (unless (executable-find "pip3")
       (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
-    (comint-send-string oj-buffer "pip3 install online-judge-tools")
-    (with-current-buffer oj-buffer
-      (comint-send-input))))
+  (oj--exec-script "pip3 install online-judge-tools")))
 
 
 ;;; Main
@@ -78,10 +83,7 @@
 
 (defun oj-login ()
   "Login online-judge system."
-  (oj-open-shell)
-  (comint-send-string oj-buffer "oj login https://atcoder.jp/")
-  (with-current-buffer oj-buffer
-    (comint-send-input)))
+  (oj--exec-script "oj login https://atcoder.jp/"))
 
 (provide 'oj)
 
