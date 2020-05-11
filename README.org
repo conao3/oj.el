@@ -34,6 +34,42 @@ Competitive programming tools client for AtCoder, Codeforces.
 * Usage
 
 * Customize
+** Template file
+In [[https://github.com/kyuridenamida/atcoder-tools][atcoder-tools]], you can use template file for auto generate source code.
+
+=oj= will specify =--template= argument automatically if you locate =OJ-HOME-DIR/template/template.{{ext}}= file like below.
+
+#+begin_src cpp
+  #include <bits/stdc++.h>
+  using namespace std;
+
+  {% if mod %}
+  const long long MOD = {{ mod }};
+  {% endif %}
+  {% if yes_str %}
+  const string YES = "{{ yes_str }}";
+  {% endif %}
+  {% if no_str %}
+  const string NO = "{{ no_str }}";
+  {% endif %}
+
+  {% if prediction_success %}
+  void solve({{ formal_arguments }}){
+
+  }
+  {% endif %}
+
+  int main(){
+      {% if prediction_success %}
+      {{input_part}}
+      solve({{ actual_arguments }});
+      {% else %}
+      {% endif %}
+      return 0;
+  }
+#+end_src
+
+For more information, please see [[https://github.com/kyuridenamida/atcoder-tools#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%81%AE%E4%BE%8B][atcoder-tools README]].
 
 * Information
 ** Community
