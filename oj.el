@@ -44,6 +44,57 @@
   :group 'oj
   :type 'directory)
 
+(defcustom oj-default-online-judge 'atcoder
+  "Default online judge service."
+  :group 'oj
+  :type
+  '(choice (const :tag "Aizu Online Judge (Arena)" 'aoj-arena)
+           (const :tag "Aizu Online Judge"         'aoj)
+           (const :tag "Anarchy Golf"              'anrchy-golf)
+           (const :tag "AtCoder"                   'atcoder)
+           (const :tag "Codeforces"                'codeforces)
+           (const :tag "CS Academy"                'cs-academy)
+           (const :tag "Facebook Hacker Cup"       'facebook-hacker-cup)
+           (const :tag "HackerRank"                'hackerrank)
+           (const :tag "Kattis"                    'kattis)
+           (const :tag "PKU JudgeOnline"           'pku)
+           (const :tag "Topcoder"                  'topcoder)
+           (const :tag "Toph (Problem Archive)"    'toph)
+           (const :tag "CodeChef"                  'codechef)
+           (const :tag "Sphere online judge"       'soj)
+           (const :tag "yukicoder"                 'yukicoder)
+           (const :tag "Library Checker"           'library-checker)))
+
+(defvar oj-online-judges
+  '((aoj-arena "Aizu Online Judge (Arena)" "https://onlinejudge.u-aizu.ac.jp/services/arena.html")
+    (aoj "Aizu Online Judge" "https://onlinejudge.u-aizu.ac.jp/home")
+    (anrchy-golf "Anarchy Golf" "http://golf.shinh.org/")
+    (atcoder "AtCoder" "https://atcoder.jp/")
+    (codeforces "Codeforces" "https://codeforces.com/")
+    (cs-academy "CS Academy" "https://csacademy.com/")
+    (facebook-hacker-cup "Facebook Hacker Cup" "https://www.facebook.com/hackercup/")
+    (hackerrank "HackerRank" "https://www.hackerrank.com/")
+    (kattis "Kattis" "https://open.kattis.com/")
+    (pku "PKU JudgeOnline" "http://poj.org/")
+    (topcoder "Topcoder" "https://www.topcoder.com/")
+    (toph "Toph (Problem Archive)" "https://toph.co/")
+    (codechef "CodeChef" "https://www.codechef.com/")
+    (soj "Sphere online judge" "https://www.spoj.com/")
+    (yukicoder "yukicoder" "https://yukicoder.me/")
+    (library-checker "Library Checker" "https://judge.yosupo.jp/"))
+  "Supported online judges.
+
+- Download sample cases
+  (aoj-arena aoj anrchy-golf atcoder codeforces
+   cs-academy facebook-hacker-cup hackerrank kattis
+   pku toph codechef soj yukicoder library-checker)
+
+- Download system cases
+  (aoj yukicoder)
+
+- Submit solution source code
+  (atcoder codeforces topcoder hackerrank toph)")
+
 
 ;;; Functions
 
