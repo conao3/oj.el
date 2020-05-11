@@ -178,11 +178,13 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 
 (defun oj-test (&optional dir)
   "Run test at DIR."
+  (interactive)
   (when dir (oj--exec-script (format "cd %s" dir)))
   (oj--exec-script "atcoder-tools test"))
 
 (defun oj-submit (&optional dir)
   "Submit code at DIR."
+  (interactive)
   (when dir (oj--exec-script (format "cd %s" dir)))
   (oj--exec-script "atcoder-tools submit"))
 
