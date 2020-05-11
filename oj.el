@@ -34,6 +34,21 @@
   :group 'tools
   :link '(url-link :tag "Github" "https://github.com/conao3/oj.el"))
 
+(defcustom oj-shell-program shell-file-name
+  "Shell program to use `oj'."
+  :group 'oj
+  :type 'string)
+
+(defvar oj-buffer nil)
+
+(defun oj-open-shell ()
+  "Open shell to controll `oj'."
+  (interactive)
+  (setq oj-buffer (get-buffer-create (format "*oj - %s*" oj-shell-program)))
+  (unless (process-live-p (get-buffer-process oj-buffer))
+    (make-comint-in-buffer "oj" oj-buffer shell-file-name))
+  (display-buffer oj-buffer))
+
 (defun oj-install-package ()
   "Install `oj' pip package via `pip3'."
   (interactive)
