@@ -124,6 +124,7 @@ This variable symbol is used for `--template' of `atcoder-tools'."
   "Exec SCRIPT in `oj-buffer'."
   (oj-open-shell)
   (with-current-buffer oj-buffer
+    (goto-char (point-max))
     (comint-delete-input)
     (comint-send-string oj-buffer script)
     (with-current-buffer oj-buffer
@@ -162,11 +163,15 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 
 (defun oj-generate (contest)
   "Generate new CONTEST working folder."
-  (interactive (list (read-string "Contest name (agc001): " nil "agc001")))
+  (interactive (list (read-string "Contest name (agc001): " nil nil "agc001")))
   (oj--exec-script
    (format "atcoder-tools gen %s --workspace %s --lang %s"
            contest (expand-file-name "atcoder" oj-home-dir)
-           oj-default-programming-language)))
+           oj-default-programming-language))
+  (oj--exec-script
+   (format "cd %s"
+           (expand-file-name
+            contest (expand-file-name "atcoder" oj-home-dir)))))
 
 (provide 'oj)
 
