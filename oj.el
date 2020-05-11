@@ -49,6 +49,7 @@
 
 (defvar comint-process-echoes)
 (declare-function comint-send-input "comint")
+(declare-function comint-delete-input "comint")
 (declare-function comint-send-string "comint")
 (declare-function make-comint-in-buffer "comint")
 
@@ -57,9 +58,11 @@
 (defun oj--exec-script (script)
   "Exec SCRIPT in `oj-buffer'."
   (oj-open-shell)
-  (comint-send-string oj-buffer script)
   (with-current-buffer oj-buffer
-    (comint-send-input)))
+    (comint-delete-input)
+    (comint-send-string oj-buffer script)
+    (with-current-buffer oj-buffer
+      (comint-send-input))))
 
 
 ;;; Main
