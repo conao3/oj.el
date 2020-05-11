@@ -44,6 +44,20 @@
   :group 'oj
   :type 'directory)
 
+(defcustom oj-default-programming-language 'cpp
+  "Default online judge service.
+
+This variable symbol is used for `--template' of `atcoder-tools'."
+  :group 'oj
+  :type
+  '(choice (const :tag "C++" 'cpp)
+           (const :tag "Java" 'java)
+           (const :tag "Rust" 'rust)
+           (const :tag "Python" 'python)
+           (const :tag "Nim" 'nim)
+           (const :tag "D" 'd)
+           (const :tag "C#" 'cs)))
+
 (defcustom oj-default-online-judge 'atcoder
   "Default online judge service."
   :group 'oj
@@ -145,6 +159,14 @@
 (defun oj-login ()
   "Login online-judge system."
   (oj--exec-script "oj login https://atcoder.jp/"))
+
+(defun oj-generate (contest)
+  "Generate new CONTEST working folder."
+  (interactive (list (read-string "Contest name (agc001): " nil "agc001")))
+  (oj--exec-script
+   (format "atcoder-tools gen %s --workspace %s --lang %s"
+           contest (expand-file-name "atcoder" oj-home-dir)
+           oj-default-programming-language)))
 
 (provide 'oj)
 
