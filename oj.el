@@ -172,7 +172,9 @@ This variable symbol is used for `--template' of `atcoder-tools'."
    (format "cd %s"
            (expand-file-name
             "A" (expand-file-name
-                 contest (expand-file-name "atcoder" oj-home-dir))))))
+                 contest (expand-file-name "atcoder" oj-home-dir)))))
+  (when (executable-find "tree")
+    (oj--exec-script "tree")))
 
 (provide 'oj)
 
