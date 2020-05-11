@@ -49,19 +49,8 @@
 
 (defvar oj-buffer nil)
 
-(defun oj-open-shell ()
-  "Open shell to controll `oj'."
-  (interactive)
-  (setq oj-buffer (get-buffer-create (format "*oj - %s*" oj-shell-program)))
-  (unless (process-live-p (get-buffer-process oj-buffer))
-    (with-current-buffer oj-buffer
-      (setq comint-process-echoes t))
-    (make-comint-in-buffer "oj" oj-buffer shell-file-name))
-  (display-buffer oj-buffer))
-
-(defun oj-install-package ()
+(defun oj--install-package ()
   "Install `oj' pip package via `pip3'."
-  (interactive)
   (when (executable-find "oj")
     (user-error "You already have `oj'.  Do nothing"))
   (unless (executable-find "python3")
@@ -72,6 +61,16 @@
   (comint-send-string oj-buffer "pip3 install online-judge-tools")
   (with-current-buffer oj-buffer
     (comint-send-input)))
+
+(defun oj-open-shell ()
+  "Open shell to controll `oj'."
+  (interactive)
+  (setq oj-buffer (get-buffer-create (format "*oj - %s*" oj-shell-program)))
+  (unless (process-live-p (get-buffer-process oj-buffer))
+    (with-current-buffer oj-buffer
+      (setq comint-process-echoes t))
+    (make-comint-in-buffer "oj" oj-buffer shell-file-name))
+  (display-buffer oj-buffer))
 
 (provide 'oj)
 
