@@ -39,6 +39,14 @@
   :group 'oj
   :type 'string)
 
+
+;;; functions
+
+(defvar comint-process-echoes)
+(declare-function comint-send-input "comint")
+(declare-function comint-send-string "comint")
+(declare-function make-comint-in-buffer "comint")
+
 (defvar oj-buffer nil)
 
 (defun oj-open-shell ()
@@ -46,6 +54,8 @@
   (interactive)
   (setq oj-buffer (get-buffer-create (format "*oj - %s*" oj-shell-program)))
   (unless (process-live-p (get-buffer-process oj-buffer))
+    (with-current-buffer oj-buffer
+      (setq comint-process-echoes t))
     (make-comint-in-buffer "oj" oj-buffer shell-file-name))
   (display-buffer oj-buffer))
 
@@ -57,12 +67,11 @@
   (unless (executable-find "python3")
     (error "Missing `python3.'  Please ensure Emacs's PATH and the installing"))
   (unless (executable-find "pip3")
-    (error "Missing `pip3.'  Please ensure Emacs's PATH and the installing"))
-  (with-current-buffer (get-buffer-create "*pip install oj*")
-    (pop-to-buffer (current-buffer))
-    (shell-command "echo \"\\$ pip3 install online-judge-tools\n\" && \
-pip3 install online-judge-tools && \
-echo \"\n\ninstall succeeded!\"" (current-buffer))))
+    (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
+  (oj-open-shell)
+  (comint-send-string oj-buffer "pip3 install online-judge-tools")
+  (with-current-buffer oj-buffer
+    (comint-send-input)))
 
 (provide 'oj)
 
