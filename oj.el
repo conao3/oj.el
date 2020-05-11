@@ -49,18 +49,18 @@
 
 (defvar oj-buffer nil)
 
-(defun oj--install-package ()
+(defun oj--install-package-maybe ()
   "Install `oj' pip package via `pip3'."
-  (when (executable-find "oj")
-    (user-error "You already have `oj'.  Do nothing"))
-  (unless (executable-find "python3")
-    (error "Missing `python3.'  Please ensure Emacs's PATH and the installing"))
-  (unless (executable-find "pip3")
-    (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
-  (oj-open-shell)
-  (comint-send-string oj-buffer "pip3 install online-judge-tools")
-  (with-current-buffer oj-buffer
-    (comint-send-input)))
+  (unless (executable-find "oj")
+    (unless (yes-or-no-p "Install online-judge-tools via pip3?")
+      (error "Abort install"))
+    (unless (executable-find "python3")
+      (error "Missing `python3.'  Please ensure Emacs's PATH and the installing"))
+    (unless (executable-find "pip3")
+      (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
+    (comint-send-string oj-buffer "pip3 install online-judge-tools")
+    (with-current-buffer oj-buffer
+      (comint-send-input))))
 
 (defun oj-open-shell ()
   "Open shell to controll `oj'."
@@ -70,7 +70,8 @@
     (with-current-buffer oj-buffer
       (setq comint-process-echoes t))
     (make-comint-in-buffer "oj" oj-buffer shell-file-name))
-  (display-buffer oj-buffer))
+  (display-buffer oj-buffer)
+  (oj--install-package-maybe))
 
 (provide 'oj)
 
