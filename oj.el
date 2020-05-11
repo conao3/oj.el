@@ -176,6 +176,11 @@ This variable symbol is used for `--template' of `atcoder-tools'."
   (when (executable-find "tree")
     (oj--exec-script "tree")))
 
+(defun oj-test (&optional dir)
+  "Run test in DIR."
+  (oj--exec-script (format "cd %s" dir))
+  (oj--exec-script "atcoder-tools test"))
+
 (provide 'oj)
 
 ;; Local Variables:
