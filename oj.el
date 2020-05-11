@@ -34,6 +34,21 @@
   :group 'tools
   :link '(url-link :tag "Github" "https://github.com/conao3/oj.el"))
 
+(defun oj-install-package ()
+  "Install `oj' pip package via `pip3'."
+  (interactive)
+  (when (executable-find "oj")
+    (user-error "You already have `oj'.  Do nothing"))
+  (unless (executable-find "python3")
+    (error "Missing `python3.'  Please ensure Emacs's PATH and the installing"))
+  (unless (executable-find "pip3")
+    (error "Missing `pip3.'  Please ensure Emacs's PATH and the installing"))
+  (with-current-buffer (get-buffer-create "*pip install oj*")
+    (pop-to-buffer (current-buffer))
+    (shell-command "echo \"\\$ pip3 install online-judge-tools\n\" && \
+pip3 install online-judge-tools && \
+echo \"\n\ninstall succeeded!\"" (current-buffer))))
+
 (provide 'oj)
 
 ;; Local Variables:
