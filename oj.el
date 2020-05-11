@@ -70,16 +70,18 @@
   (display-buffer oj-buffer))
 
 (defun oj-install-package ()
-  "Install `oj' pip package via `pip3'."
+  "Install `oj', `atcoder-tools' pip package via `pip3'."
   (interactive)
-  (unless (executable-find "oj")
-    (unless (yes-or-no-p "Install online-judge-tools via pip3?")
-      (error "Abort install"))
-    (unless (executable-find "python3")
-      (error "Missing `python3.'  Please ensure Emacs's PATH and the installing"))
-    (unless (executable-find "pip3")
-      (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
-  (oj--exec-script "pip3 install online-judge-tools")))
+  (unless (yes-or-no-p "Install tools via pip3?")
+    (error "Abort install"))
+  (dolist (elm '(("oj" . "online-judge-tools")
+                 ("atcoder-tools" . "atcoder-tools")))
+    (unless (executable-find (car elm))
+      (unless (executable-find "python3")
+        (error "Missing `python3'.  Please ensure Emacs's PATH and the installing"))
+      (unless (executable-find "pip3")
+        (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
+      (oj--exec-script (format "pip3 install %s" (cdr elm))))))
 
 (defun oj-login ()
   "Login online-judge system."
