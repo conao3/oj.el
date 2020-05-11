@@ -76,6 +76,13 @@
   (display-buffer oj-buffer)
   (oj--install-package-maybe))
 
+(defun oj-login ()
+  "Login online-judge system."
+  (oj-open-shell)
+  (comint-send-string oj-buffer "oj login https://atcoder.jp/")
+  (with-current-buffer oj-buffer
+    (comint-send-input)))
+
 (provide 'oj)
 
 ;; Local Variables:
