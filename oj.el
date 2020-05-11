@@ -89,28 +89,28 @@ This variable symbol is used for `--template' of `atcoder-tools'."
            (const :tag "Library Checker"           'library-checker)))
 
 (defvar oj-online-judges
-  '((aoj-arena "Aizu Online Judge (Arena)" "https://onlinejudge.u-aizu.ac.jp/services/arena.html")
-    (aoj "Aizu Online Judge" "https://onlinejudge.u-aizu.ac.jp/home")
-    (anrchy-golf "Anarchy Golf" "http://golf.shinh.org/")
-    (atcoder "AtCoder" "https://atcoder.jp/")
-    (codeforces "Codeforces" "https://codeforces.com/")
-    (cs-academy "CS Academy" "https://csacademy.com/")
-    (facebook-hacker-cup "Facebook Hacker Cup" "https://www.facebook.com/hackercup/")
-    (hackerrank "HackerRank" "https://www.hackerrank.com/")
-    (kattis "Kattis" "https://open.kattis.com/")
-    (pku "PKU JudgeOnline" "http://poj.org/")
-    (topcoder "Topcoder" "https://www.topcoder.com/")
-    (toph "Toph (Problem Archive)" "https://toph.co/")
-    (codechef "CodeChef" "https://www.codechef.com/")
-    (soj "Sphere online judge" "https://www.spoj.com/")
-    (yukicoder "yukicoder" "https://yukicoder.me/")
-    (library-checker "Library Checker" "https://judge.yosupo.jp/"))
+  '((aoj-arena         . ((name . "Aizu Online Judge (Arena)") (url . "https://onlinejudge.u-aizu.ac.jp/services/arena.html")))
+    (aoj               . ((name . "Aizu Online Judge")         (url . "https://onlinejudge.u-aizu.ac.jp/home")))
+    (anrchy-golf       . ((name . "Anarchy Golf")              (url . "http://golf.shinh.org/")))
+    (atcoder           . ((name . "AtCoder")                   (url . "https://atcoder.jp/")))
+    (codeforces        . ((name . "Codeforces")                (url . "https://codeforces.com/")))
+    (cs-academy        . ((name . "CS Academy")                (url . "https://csacademy.com/")))
+    (facebook          . ((name . "Facebook Hacker Cup")       (url . "https://www.facebook.com/hackercup/")))
+    (hackerrank        . ((name . "HackerRank")                (url . "https://www.hackerrank.com/")))
+    (kattis            . ((name . "Kattis")                    (url . "https://open.kattis.com/")))
+    (pku               . ((name . "PKU JudgeOnline")           (url . "http://poj.org/")))
+    (topcoder          . ((name . "Topcoder")                  (url . "https://www.topcoder.com/")))
+    (toph              . ((name . "Toph (Problem Archive)")    (url . "https://toph.co/")))
+    (codechef          . ((name . "CodeChef")                  (url . "https://www.codechef.com/")))
+    (soj               . ((name . "Sphere online judge")       (url . "https://www.spoj.com/")))
+    (yukicoder         . ((name . "yukicoder")                 (url . "https://yukicoder.me/")))
+    (library-checker   . ((name . "Library Checker")           (url . "https://judge.yosupo.jp/"))))
   "Supported online judges.
 
 - Download sample cases
   (aoj-arena aoj anrchy-golf atcoder codeforces
-   cs-academy facebook-hacker-cup hackerrank kattis
-   pku toph codechef soj yukicoder library-checker)
+   cs-academy facebook hackerrank kattis pku toph
+   codechef soj yukicoder library-checker)
 
 - Download system cases
   (aoj yukicoder)
