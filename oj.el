@@ -162,7 +162,7 @@ NAME is also whole URL to login."
   (interactive (list (completing-read "Login for: " (mapcar #'car oj-online-judges))))
   (let ((url (if (string-match "/" name)
                  name
-               (alist-get (alist-get (intern name) oj-online-judges) 'url))))
+               (alist-get 'url (alist-get (intern name) oj-online-judges)))))
     (oj--exec-script (format "oj login %s" url))))
 
 (defun oj-generate (contest)
