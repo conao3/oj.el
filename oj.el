@@ -120,7 +120,9 @@ This variable symbol is used for `--template' of `atcoder-tools'."
   (aoj yukicoder)
 
 - Submit solution source code
-  (atcoder codeforces topcoder hackerrank toph)")
+  (atcoder codeforces topcoder hackerrank toph)
+
+NOTE: online-judge symbol MUST NOT include slash (\"/\").")
 
 
 ;;; Functions
