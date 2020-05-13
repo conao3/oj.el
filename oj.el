@@ -122,6 +122,15 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 - Submit solution source code
   (atcoder codeforces topcoder hackerrank toph)")
 
+(defcustom oj-backend-alist '((oj-generate . oj)
+                              (oj-test     . oj)
+                              (oj-submit   . oj))
+  "Use backend for `oj' frontend.
+Currentry, `oj' or `atcoder-tools' are supported.
+`oj-generate--oj' will be called if `oj' is value of key `oj-generate'."
+  :group 'oj
+  :type 'sexp)
+
 
 ;;; Functions
 
@@ -146,6 +155,38 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 (defun oj--file-readable (file)
   "Return FILE if readable."
   (when (file-readable-p file) file))
+
+
+;;; Backend - oj
+
+(defun oj-install-package--oj ()
+  "Install `oj'."
+  (interactive))
+
+(defun oj-generate--oj ()
+  "`oj-generate' using `oj'.")
+
+(defun oj-test--oj ()
+  "`oj-test' using `oj'.")
+
+(defun oj-submit--oj ()
+  "`oj-submit' using `oj'.")
+
+
+;;; Backend - atcoder-tools
+
+(defun oj-install-package--atcoder-tools ()
+  "Install `atcoder-tools'."
+  (interactive))
+
+(defun oj-generate--atcoder-tools ()
+  "`oj-generate' using `atcoder-tools'.")
+
+(defun oj-test--atcoder-tools ()
+  "`oj-test' using `atcoder-tools'.")
+
+(defun oj-submit--atcoder-tools ()
+  "`oj-submit' using `atcoder-tools'.")
 
 
 ;;; Main
