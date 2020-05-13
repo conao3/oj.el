@@ -122,15 +122,6 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 - Submit solution source code
   (atcoder codeforces topcoder hackerrank toph)")
 
-(defcustom oj-backend-alist '((oj-generate . oj)
-                              (oj-test     . oj)
-                              (oj-submit   . oj))
-  "Use backend for `oj' frontend.
-Currentry, `oj' or `atcoder-tools' are supported.
-`oj-generate--oj' will be called if `oj' is value of key `oj-generate'."
-  :group 'oj
-  :type 'sexp)
-
 
 ;;; Functions
 
@@ -157,9 +148,9 @@ Currentry, `oj' or `atcoder-tools' are supported.
   (when (file-readable-p file) file))
 
 
-;;; Backend - oj
+;;; Main
 
-(defun oj-install-package--oj ()
+(defun oj-install-package ()
   "Install `oj'."
   (interactive)
   (unless (yes-or-no-p "Install tools via pip3?")
@@ -170,42 +161,6 @@ Currentry, `oj' or `atcoder-tools' are supported.
     (unless (executable-find "pip3")
       (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
     (oj--exec-script "pip3 install online-judge-tools")))
-
-(defun oj-generate--oj ()
-  "`oj-generate' using `oj'.")
-
-(defun oj-test--oj ()
-  "`oj-test' using `oj'.")
-
-(defun oj-submit--oj ()
-  "`oj-submit' using `oj'.")
-
-
-;;; Backend - atcoder-tools
-
-(defun oj-install-package--atcoder-tools ()
-  "Install `atcoder-tools'."
-  (interactive)
-  (unless (yes-or-no-p "Install tools via pip3?")
-    (error "Abort install"))
-  (unless (executable-find "atcoder-tools")
-    (unless (executable-find "python3")
-      (error "Missing `python3'.  Please ensure Emacs's PATH and the installing"))
-    (unless (executable-find "pip3")
-      (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
-    (oj--exec-script "pip3 install atcoder-tools")))
-
-(defun oj-generate--atcoder-tools ()
-  "`oj-generate' using `atcoder-tools'.")
-
-(defun oj-test--atcoder-tools ()
-  "`oj-test' using `atcoder-tools'.")
-
-(defun oj-submit--atcoder-tools ()
-  "`oj-submit' using `atcoder-tools'.")
-
-
-;;; Main
 
 (defun oj-open-shell ()
   "Open shell to controll `oj'."
