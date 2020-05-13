@@ -28,6 +28,7 @@
 
 ;;; Code:
 
+(require 'format-spec)
 (require 'quickrun)
 
 (defgroup oj nil
@@ -196,6 +197,11 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 (defun oj-test (&optional dir)
   "Run test at DIR."
   (interactive)
+  (let* ((alist (quickrun--command-info
+                (quickrun--command-key (buffer-file-name))))
+         (spec (quickrun--template-argument alist (buffer-file-name))))
+    (when-let (fmt (alist-get :compile-only alist))
+      (oj--exec-script (format-spec fmt spec))))
   (when dir (oj--exec-script (format "cd %s" dir)))
   (oj--exec-script "atcoder-tools test"))
 
