@@ -161,7 +161,15 @@ Currentry, `oj' or `atcoder-tools' are supported.
 
 (defun oj-install-package--oj ()
   "Install `oj'."
-  (interactive))
+  (interactive)
+  (unless (yes-or-no-p "Install tools via pip3?")
+    (error "Abort install"))
+  (unless (executable-find "oj")
+    (unless (executable-find "python3")
+      (error "Missing `python3'.  Please ensure Emacs's PATH and the installing"))
+    (unless (executable-find "pip3")
+      (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
+    (oj--exec-script "pip3 install online-judge-tools")))
 
 (defun oj-generate--oj ()
   "`oj-generate' using `oj'.")
@@ -177,7 +185,15 @@ Currentry, `oj' or `atcoder-tools' are supported.
 
 (defun oj-install-package--atcoder-tools ()
   "Install `atcoder-tools'."
-  (interactive))
+  (interactive)
+  (unless (yes-or-no-p "Install tools via pip3?")
+    (error "Abort install"))
+  (unless (executable-find "atcoder-tools")
+    (unless (executable-find "python3")
+      (error "Missing `python3'.  Please ensure Emacs's PATH and the installing"))
+    (unless (executable-find "pip3")
+      (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
+    (oj--exec-script "pip3 install atcoder-tools")))
 
 (defun oj-generate--atcoder-tools ()
   "`oj-generate' using `atcoder-tools'.")
@@ -200,20 +216,6 @@ Currentry, `oj' or `atcoder-tools' are supported.
       (setq comint-process-echoes t))
     (make-comint-in-buffer "oj" oj-buffer shell-file-name))
   (display-buffer oj-buffer))
-
-(defun oj-install-package ()
-  "Install `oj', `atcoder-tools' pip package via `pip3'."
-  (interactive)
-  (unless (yes-or-no-p "Install tools via pip3?")
-    (error "Abort install"))
-  (dolist (elm '(("oj" . "online-judge-tools")
-                 ("atcoder-tools" . "atcoder-tools")))
-    (unless (executable-find (car elm))
-      (unless (executable-find "python3")
-        (error "Missing `python3'.  Please ensure Emacs's PATH and the installing"))
-      (unless (executable-find "pip3")
-        (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
-      (oj--exec-script (format "pip3 install %s" (cdr elm))))))
 
 (defun oj-login ()
   "Login online-judge system."
