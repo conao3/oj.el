@@ -29,6 +29,7 @@
 ;;; Code:
 
 (require 'format-spec)
+(require 'subr-x)
 (require 'quickrun)
 
 (defgroup oj nil
