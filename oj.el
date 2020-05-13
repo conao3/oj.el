@@ -151,16 +151,18 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 ;;; Main
 
 (defun oj-install-package ()
-  "Install `oj'."
+  "Install `oj', `oj-template' pip package via `pip3'."
   (interactive)
   (unless (yes-or-no-p "Install tools via pip3?")
     (error "Abort install"))
-  (unless (executable-find "oj")
-    (unless (executable-find "python3")
-      (error "Missing `python3'.  Please ensure Emacs's PATH and the installing"))
-    (unless (executable-find "pip3")
-      (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
-    (oj--exec-script "pip3 install online-judge-tools")))
+  (dolist (elm '(("oj" . "online-judge-tools")
+                 ("oj-template" . "online-judge-template-generator")))
+    (unless (executable-find (car elm))
+      (unless (executable-find "python3")
+        (error "Missing `python3'.  Please ensure Emacs's PATH and the installing"))
+      (unless (executable-find "pip3")
+        (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
+      (oj--exec-script (format "pip3 install %s" (cdr elm))))))
 
 (defun oj-open-shell ()
   "Open shell to controll `oj'."
