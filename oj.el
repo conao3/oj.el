@@ -142,6 +142,10 @@ This variable symbol is used for `--template' of `atcoder-tools'."
     (with-current-buffer oj-buffer
       (comint-send-input))))
 
+(defun oj--file-readable (file)
+  "Return FILE if readable."
+  (when (file-readable-p file) file))
+
 
 ;;; Main
 
@@ -181,11 +185,14 @@ This variable symbol is used for `--template' of `atcoder-tools'."
      (concat
       (format "atcoder-tools gen %s --workspace %s --lang %s"
               contest (expand-file-name "atcoder" oj-home-dir) .name)
-      (let ((file (expand-file-name
-                   (format "template/template.%s" .ext)
-                   oj-home-dir)))
-        (when (file-readable-p file)
-          (format " --template %s" file))))))
+      (when-let (file (oj--file-readable
+                       (expand-file-name
+                        (format "template/template.%s" .ext) oj-home-dir)))
+        (format " --template %s" file))
+      (when-let (file (oj--file-readable
+                       (expand-file-name
+                        "conf/atcoder-tools.conf" oj-home-dir)))
+        (format " --config %s" file)))))
   (oj--exec-script
    (format "cd %s"
            (expand-file-name
