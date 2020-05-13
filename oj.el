@@ -175,9 +175,16 @@ This variable symbol is used for `--template' of `atcoder-tools'."
     (make-comint-in-buffer "oj" oj-buffer shell-file-name))
   (display-buffer oj-buffer))
 
-(defun oj-login ()
-  "Login online-judge system."
-  (oj--exec-script "oj login https://atcoder.jp/"))
+(defun oj-login (name)
+  "Login online-judge system.
+
+NAME is string of (mapcar #'car oj-online-judges).
+NAME is also whole URL to login."
+  (interactive (list (completing-read "Login for: " (mapcar #'car oj-online-judges))))
+  (let ((url (if (string-match "/" name)
+                 name
+               (alist-get (alist-get (intern name) oj-online-judges) 'url))))
+    (oj--exec-script (format "oj login %s" url))))
 
 (defun oj-generate (contest)
   "Generate new CONTEST working folder."
