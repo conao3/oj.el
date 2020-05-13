@@ -48,29 +48,6 @@
   :group 'oj
   :type 'directory)
 
-(defcustom oj-default-programming-language 'cpp
-  "Default online judge service.
-
-This variable symbol is used for `--template' of `atcoder-tools'."
-  :group 'oj
-  :type
-  '(choice (const :tag "C++" 'cpp)
-           (const :tag "Java" 'java)
-           (const :tag "Rust" 'rust)
-           (const :tag "Python" 'python)
-           (const :tag "Nim" 'nim)
-           (const :tag "D" 'd)
-           (const :tag "C#" 'cs)))
-
-(defvar oj-programming-languages
-  '((cpp    . ((raw . "C++")    (name . "cpp")    (ext . "cpp")))
-    (java   . ((raw . "Java")   (name . "java")   (ext . "java")))
-    (rust   . ((raw . "Rust")   (name . "rust")   (ext . "rs")))
-    (python . ((raw . "Python") (name . "python") (ext . "py")))
-    (nim    . ((raw . "Nim")    (name . "nim")    (ext . "nim")))
-    (d      . ((raw . "D")      (name . "d")      (ext . "d")))
-    (cs     . ((raw . "C#")     (name . "cs")     (ext . "cs")))))
-
 (defcustom oj-default-online-judge 'atcoder
   "Default online judge service."
   :group 'oj
@@ -191,19 +168,6 @@ NAME is also whole URL to login."
 (defun oj-generate (contest)
   "Generate new CONTEST working folder."
   (interactive (list (read-string "Contest name (agc001): " nil nil "agc001")))
-  (let-alist (alist-get oj-default-programming-language oj-programming-languages)
-    (oj--exec-script
-     (concat
-      (format "atcoder-tools gen %s --workspace %s --lang %s"
-              contest (expand-file-name "atcoder" oj-home-dir) .name)
-      (when-let (file (oj--file-readable
-                       (expand-file-name
-                        (format "template/template.%s" .ext) oj-home-dir)))
-        (format " --template %s" file))
-      (when-let (file (oj--file-readable
-                       (expand-file-name
-                        "conf/atcoder-tools.conf" oj-home-dir)))
-        (format " --config %s" file)))))
   (oj--exec-script
    (format "cd %s"
            (expand-file-name
