@@ -153,7 +153,7 @@ This variable symbol is used for `--template' of `atcoder-tools'."
 (defun oj-install-package ()
   "Install `oj', `oj-template', `selenium' pip package via `pip3'."
   (interactive)
-  (unless (yes-or-no-p "Install tools via pip3?")
+  (unless (yes-or-no-p "Install `oj', `oj-template', `selenium' via pip3?")
     (error "Abort install"))
   (dolist (elm '(("oj" . "online-judge-tools")
                  ("oj-template" . "online-judge-template-generator")
