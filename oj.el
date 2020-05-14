@@ -179,6 +179,7 @@ NAME is also whole URL to login."
                  name
                (concat
                 (alist-get 'url (alist-get oj-default-online-judge oj-online-judges)) name))))
+    (oj--exec-script (format "cd %s" oj-home-dir))
     (oj--exec-script (format "oj download %s" url))))
 
 (defun oj-test (&optional dir)
