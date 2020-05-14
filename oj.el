@@ -145,6 +145,107 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
          sym)))
    oj-online-judges))
 
+(defun oj--url-to-dirname (url)
+  "Detect suitable dirname from URL."
+  (or
+   ;; http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_8_C
+   ;; http://judge.u-aizu.ac.jp/onlinejudge/description.jsp
+   (and (string-match
+         "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp\\?id=\\([^/]+\\)" url)
+        (match-string 1 url))
+   (and (string-match
+         "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp" url)
+        "1000")
+
+   ;; https://onlinejudge.u-aizu.ac.jp/courses/lesson/2/ITP1/1/ITP1_1_A
+   (and (string-match
+         "https://onlinejudge.u-aizu.ac.jp/courses/[^/]*/[^/]*/[^/]*/[^/]*/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; https://atcoder.jp/contests/abc167/tasks/abc167_a
+   (and (string-match
+         "https://atcoder.jp/contests/[^/]*/tasks/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+   (and (string-match
+         "https://atcoder.jp/contests/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; http://golf.shinh.org/p.rb?hello+world
+   (and (string-match
+         "http://golf.shinh.org/p.rb\\?\\([^/]+\\)" url)
+        (replace-regexp-in-string "\\+" "_" (match-string 1 url)))
+
+   ;; https://codeforces.com/contest/1349/problem/A
+   (and (string-match
+         "https://codeforces.com/contest/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+   (and (string-match
+         "https://codeforces.com/contest/\\([^/]+\\)/problem/\\([^/]+\\)/?" url)
+        (format "%s_%s" (match-string 1 url) (match-string 2 url)))
+
+   ;; https://csacademy.com/contest/interview-archive/task/3-divisible-pairs/
+   ;; https://csacademy.com/contest/archive/task/gcd/
+   (and (string-match
+         "https://csacademy.com/contest/[^/]+/task/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; https://www.hackerrank.com/challenges/c-tutorial-basic-data-types
+   ;; https://www.hackerrank.com/challenges/c-tutorial-basic-data-types/problem
+   ;; https://www.hackerrank.com/contests/projecteuler/challenges/euler254/problem
+   (and (string-match
+         "https://www.hackerrank.com/challenges/\\([^/]+\\)/?\\(problem\\)?" url)
+        (match-string 1 url))
+   (and (string-match
+         "https://www.hackerrank.com/contests/\\([^/]+\\)/challenges/\\([^/]+\\)/?\\(problem\\)?" url)
+        (format "%s_%s" (match-string 1 url) (match-string 2 url)))
+
+   ;; https://open.kattis.com/problems/hello
+   (and (string-match
+         "https://open.kattis.com/problems/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; http://poj.org/problem?id=1000
+   (and (string-match
+         "http://poj.org/problem\\?id=\\([^/]+\\)" url)
+        (match-string 1 url))
+
+   ;; https://www.topcoder.com/challenges/30125517
+   (and (string-match
+         "https://www.topcoder.com/challenges/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; https://toph.co/p/count-the-chaos
+   (and (string-match
+         "https://toph.co/p/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; https://www.codechef.com/problems/TREEMX
+   (and (string-match
+         "https://www.codechef.com/problems/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; https://www.spoj.com/problems/TEST/
+   ;; https://www.spoj.com/problems/PRIME1/
+   (and (string-match
+         "https://www.spoj.com/problems/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; https://yukicoder.me/contests/262
+   ;; https://yukicoder.me/problems/no/1046
+   (and (string-match
+         "https://yukicoder.me/contests/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+   (and (string-match
+         "https://yukicoder.me/problems/no/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   ;; https://judge.yosupo.jp/problem/aplusb
+   (and (string-match
+         "https://judge.yosupo.jp/problem/\\([^/]+\\)/?" url)
+        (match-string 1 url))
+
+   "test"))
+
 
 ;;; Main
 
@@ -198,7 +299,7 @@ NAME is also whole URL to login."
     (if-let (judge (oj--url-to-online-judge url))
         (progn
           (oj--exec-script (format "mkdir -p %s && cd %s" judge judge))
-          (oj--exec-script (format "oj download %s -d %s" url judge)))
+          (oj--exec-script (format "oj download %s -d %s" url (oj--url-to-dirname url))))
       (oj--exec-script (format "oj download %s" url)))))
 
 (defun oj-test (&optional dir)
