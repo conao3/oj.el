@@ -70,6 +70,7 @@
 
 (defvar oj-online-judges
   '((aoj             . ((name . "Aizu Online Judge")      (url . "https://onlinejudge.u-aizu.ac.jp/")))
+    (aoj2            . ((name . "Aizu Online Judge (Beta)") (url . "https://onlinejudge.u-aizu.ac.jp/courses/")))
     (anrchy-golf     . ((name . "Anarchy Golf")           (url . "http://golf.shinh.org/")))
     (atcoder         . ((name . "AtCoder")                (url . "https://atcoder.jp/contests/")))
     (codeforces      . ((name . "Codeforces")             (url . "https://codeforces.com/")))
