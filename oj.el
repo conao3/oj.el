@@ -175,9 +175,8 @@ NAME is also whole URL to login."
    (list (read-string
           (format "Contest name (`abc167' for %s, or URL): " oj-default-online-judge)
           nil nil "abc167")))
-  (let ((url (if (string-match "\\([-a-z]+\\)/" name)
-                 (concat
-                  (alist-get 'url (alist-get (intern (match-string 1 name)) oj-online-judges)) name)
+  (let ((url (if (string-match "http" name)
+                 name
                (concat
                 (alist-get 'url (alist-get oj-default-online-judge oj-online-judges)) name))))
     (oj--exec-script (format "oj download %s" url))))
