@@ -71,9 +71,9 @@
 
 (defvar oj-online-judges
   '((aoj-arena         . ((name . "Aizu Online Judge (Arena)") (url . "https://onlinejudge.u-aizu.ac.jp/services/arena.html")))
-    (aoj               . ((name . "Aizu Online Judge")         (url . "https://onlinejudge.u-aizu.ac.jp")))
+    (aoj               . ((name . "Aizu Online Judge")         (url . "https://onlinejudge.u-aizu.ac.jp/")))
     (anrchy-golf       . ((name . "Anarchy Golf")              (url . "http://golf.shinh.org/")))
-    (atcoder           . ((name . "AtCoder")                   (url . "https://atcoder.jp/")))
+    (atcoder           . ((name . "AtCoder")                   (url . "https://atcoder.jp/contests/")))
     (codeforces        . ((name . "Codeforces")                (url . "https://codeforces.com/")))
     (cs-academy        . ((name . "CS Academy")                (url . "https://csacademy.com/")))
     (facebook          . ((name . "Facebook Hacker Cup")       (url . "https://www.facebook.com/hackercup/")))
@@ -126,6 +126,10 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
   "Return FILE if readable."
   (when (file-readable-p file) file))
 
+(defun oj--online-judges ()
+  "Return supported online-judge symbols."
+  (mapcar #'car oj-online-judges))
+
 
 ;;; Main
 
@@ -165,16 +169,18 @@ NAME is also whole URL to login."
                (alist-get 'url (alist-get (intern name) oj-online-judges)))))
     (oj--exec-script (format "oj login %s" url))))
 
-(defun oj-generate (contest)
-  "Generate new CONTEST working folder."
-  (interactive (list (read-string "Contest name (agc001): " nil nil "agc001")))
-  (oj--exec-script
-   (format "cd %s"
-           (expand-file-name
-            "A" (expand-file-name
-                 contest (expand-file-name "atcoder" oj-home-dir)))))
-  (when (executable-find "tree")
-    (oj--exec-script "tree")))
+(defun oj-generate (name)
+  "Generate new NAME working folder."
+  (interactive
+   (list (read-string
+          (format "Contest name (`abc167' for %s, or URL): " oj-default-online-judge)
+          nil nil "abc167")))
+  (let ((url (if (string-match "\\([-a-z]+\\)/" name)
+                 (concat
+                  (alist-get 'url (alist-get (intern (match-string 1 name)) oj-online-judges)) name)
+               (concat
+                (alist-get 'url (alist-get oj-default-online-judge oj-online-judges)) name))))
+    (oj--exec-script (format "oj download %s" url))))
 
 (defun oj-test (&optional dir)
   "Run test at DIR."
