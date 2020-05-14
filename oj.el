@@ -52,8 +52,7 @@
   "Default online judge service."
   :group 'oj
   :type
-  '(choice (const :tag "Aizu Online Judge (Arena)" 'aoj-arena)
-           (const :tag "Aizu Online Judge"         'aoj)
+  '(choice (const :tag "Aizu Online Judge"         'aoj)
            (const :tag "Anarchy Golf"              'anrchy-golf)
            (const :tag "AtCoder"                   'atcoder)
            (const :tag "Codeforces"                'codeforces)
@@ -70,8 +69,7 @@
            (const :tag "Library Checker"           'library-checker)))
 
 (defvar oj-online-judges
-  '((aoj-arena         . ((name . "Aizu Online Judge (Arena)") (url . "https://onlinejudge.u-aizu.ac.jp/services/arena.html")))
-    (aoj               . ((name . "Aizu Online Judge")         (url . "https://onlinejudge.u-aizu.ac.jp/")))
+  '((aoj               . ((name . "Aizu Online Judge")         (url . "https://onlinejudge.u-aizu.ac.jp/")))
     (anrchy-golf       . ((name . "Anarchy Golf")              (url . "http://golf.shinh.org/")))
     (atcoder           . ((name . "AtCoder")                   (url . "https://atcoder.jp/contests/")))
     (codeforces        . ((name . "Codeforces")                (url . "https://codeforces.com/")))
