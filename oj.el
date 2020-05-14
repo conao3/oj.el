@@ -71,20 +71,22 @@
 (defvar oj-online-judges
   '((aoj             . ((name . "Aizu Online Judge")        (url . "https://onlinejudge.u-aizu.ac.jp/")))
     (aoj2            . ((name . "Aizu Online Judge (Beta)") (url . "https://onlinejudge.u-aizu.ac.jp/courses/")))
-    (anrchy-golf     . ((name . "Anarchy Golf")             (url . "http://golf.shinh.org/")))
+    (anrchy-golf     . ((name . "Anarchy Golf")             (url . "http://golf.shinh.org/p.rb?")))
     (atcoder         . ((name . "AtCoder")                  (url . "https://atcoder.jp/contests/")))
-    (codeforces      . ((name . "Codeforces")               (url . "https://codeforces.com/")))
-    (cs-academy      . ((name . "CS Academy")               (url . "https://csacademy.com/")))
+    (codeforces      . ((name . "Codeforces")               (url . "https://codeforces.com/contests/")))
+    (cs-academy      . ((name . "CS Academy")               (url . "https://csacademy.com/contests/")))
     (facebook        . ((name . "Facebook Hacker Cup")      (url . "https://www.facebook.com/hackercup/")))
-    (hackerrank      . ((name . "HackerRank")               (url . "https://www.hackerrank.com/")))
-    (kattis          . ((name . "Kattis")                   (url . "https://open.kattis.com/")))
-    (pku             . ((name . "PKU JudgeOnline")          (url . "http://poj.org/")))
-    (topcoder        . ((name . "Topcoder")                 (url . "https://www.topcoder.com/")))
-    (toph            . ((name . "Toph (Problem Archive)")   (url . "https://toph.co/")))
-    (codechef        . ((name . "CodeChef")                 (url . "https://www.codechef.com/")))
-    (soj             . ((name . "Sphere online judge")      (url . "https://www.spoj.com/")))
-    (yukicoder       . ((name . "yukicoder")                (url . "https://yukicoder.me/")))
-    (library-checker . ((name . "Library Checker")          (url . "https://judge.yosupo.jp/"))))
+    (hackerrank      . ((name . "HackerRank")               (url . "https://www.hackerrank.com/challenges/")))
+    (hackerrank-contest . ((name . "HackerRank Contest")    (url . "https://www.hackerrank.com/contests/")))
+    (kattis          . ((name . "Kattis")                   (url . "https://open.kattis.com/probrems/")))
+    (pku             . ((name . "PKU JudgeOnline")          (url . "http://poj.org/problem?id=")))
+    (topcoder        . ((name . "Topcoder")                 (url . "https://www.topcoder.com/challenges/")))
+    (toph            . ((name . "Toph (Problem Archive)")   (url . "https://toph.co/p/")))
+    (codechef        . ((name . "CodeChef")                 (url . "https://www.codechef.com/problems/")))
+    (soj             . ((name . "Sphere online judge")      (url . "https://www.spoj.com/problems/")))
+    (yukicoder       . ((name . "yukicoder")                (url . "https://yukicoder.me/problems/no/")))
+    (yukicoder-contest . ((name . "yukicoder Contest")      (url . "https://yukicoder.me/contests/")))
+    (library-checker . ((name . "Library Checker")          (url . "https://judge.yosupo.jp/problem/"))))
   "Supported online judges.
 
 - Download sample cases
@@ -167,6 +169,7 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
         (replace-regexp-in-string "\\+" "_" (match-string 1 url)))
 
    ;; https://atcoder.jp/contests/abc167/tasks/abc167_a
+   ;; https://atcoder.jp/contests/abc167
    (and (string-match
          "https://atcoder.jp/contests/[^/]*/tasks/\\([^/]+\\)/?" url)
         (match-string 1 url))
