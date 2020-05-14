@@ -161,6 +161,11 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
          "https://onlinejudge.u-aizu.ac.jp/courses/[^/]*/[^/]*/[^/]*/[^/]*/\\([^/]+\\)/?" url)
         (match-string 1 url))
 
+   ;; http://golf.shinh.org/p.rb?hello+world
+   (and (string-match
+         "http://golf.shinh.org/p.rb\\?\\([^/]+\\)" url)
+        (replace-regexp-in-string "\\+" "_" (match-string 1 url)))
+
    ;; https://atcoder.jp/contests/abc167/tasks/abc167_a
    (and (string-match
          "https://atcoder.jp/contests/[^/]*/tasks/\\([^/]+\\)/?" url)
@@ -168,11 +173,6 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
    (and (string-match
          "https://atcoder.jp/contests/\\([^/]+\\)/?" url)
         (match-string 1 url))
-
-   ;; http://golf.shinh.org/p.rb?hello+world
-   (and (string-match
-         "http://golf.shinh.org/p.rb\\?\\([^/]+\\)" url)
-        (replace-regexp-in-string "\\+" "_" (match-string 1 url)))
 
    ;; https://codeforces.com/contest/1349/problem/A
    (and (string-match
