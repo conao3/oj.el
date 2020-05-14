@@ -130,6 +130,21 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
   "Return supported online-judge symbols."
   (mapcar #'car oj-online-judges))
 
+(defun oj--first-value (fn lst)
+  "Apply FN for LST and return first non-nil value."
+  (when-let (val (cl-member-if fn lst))
+    (funcall fn (car val))))
+
+(defun oj--url-to-online-judge (url)
+  "Detect online-judge service from URL."
+  (oj--first-value
+   (lambda (elm)
+     (let ((sym (car elm))
+           (alist (cdr elm)))
+       (when (string-match (alist-get 'url alist) url)
+         sym)))
+   oj-online-judges))
+
 
 ;;; Main
 
@@ -180,7 +195,11 @@ NAME is also whole URL to login."
                (concat
                 (alist-get 'url (alist-get oj-default-online-judge oj-online-judges)) name))))
     (oj--exec-script (format "cd %s" oj-home-dir))
-    (oj--exec-script (format "oj download %s" url))))
+    (if-let (judge (oj--url-to-online-judge url))
+        (progn
+          (oj--exec-script (format "mkdir -p %s && cd %s" judge judge))
+          (oj--exec-script (format "oj download %s -d %s" url judge)))
+      (oj--exec-script (format "oj download %s" url)))))
 
 (defun oj-test (&optional dir)
   "Run test at DIR."
