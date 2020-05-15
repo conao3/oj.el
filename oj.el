@@ -248,6 +248,34 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
 
    "test"))
 
+(defun oj--shortname-to-url (shortname &optional judge)
+  "Convert SHORTNAME to URL for JUDGE.
+
+  (oj--shortname-to-url \"abc167\" 'atcoder)
+  ;;=> https://atcoder.jp/contests/abc167
+
+  (oj--shortname-to-url \"abc167/a\" 'atcoder)
+  ;;=> https://atcoder.jp/contests/abc167/tasks/abc167_a"
+  (let ((judge* (or judge oj-default-online-judge))
+        (args (split-string shortname "/")))
+    (cl-case (length args)
+      (1
+       (concat (alist-get 'url (alist-get judge* oj-online-judges)) shortname))
+      (2
+       (cl-case judge*
+         (atcoder
+          (format "https://atcoder.jp/contests/%s/tasks/%s"
+                  (nth 0 args)
+                  (format "%s_%s" (nth 0 args) (nth 1 args))))
+         (codeforces
+          (format "https://codeforces.com/contest/%s/problem/%s"
+                  (nth 0 args) (nth 1 args)))
+         (hackerrank
+          (format "https://www.hackerrank.com/contests/%s/challenges/%s"
+                  (nth 0 args) (nth 1 args)))
+         (otherwise
+          (error "Slash input (%s) for %s is not supported" shortname judge*)))))))
+
 
 ;;; Main
 
