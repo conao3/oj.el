@@ -321,10 +321,7 @@ NAME is also whole URL to login."
    (list (read-string
           (format "Contest name (`abc167' for %s, or URL): " oj-default-online-judge)
           nil nil "abc167")))
-  (let ((url (if (string-match "http" name)
-                 name
-               (concat
-                (alist-get 'url (alist-get oj-default-online-judge oj-online-judges)) name))))
+  (let ((url (if (string-match "http" name) name (oj--shortname-to-url name))))
     (oj--exec-script (format "cd %s" oj-home-dir))
     (if-let (judge (oj--url-to-online-judge url))
         (progn
