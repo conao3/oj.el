@@ -322,7 +322,7 @@ NAME is also whole URL to login."
           (format "Contest name (`abc167' for %s, or URL): " oj-default-online-judge)
           nil nil "abc167")))
   (let ((url (if (string-match "http" name) name (oj--shortname-to-url name))))
-    (oj--exec-script (format "cd %s" oj-home-dir))
+    (oj--exec-script (format "mkdir -p %s && cd %s" oj-home-dir oj-home-dir))
     (if-let (judge (oj--url-to-online-judge url))
         (progn
           (oj--exec-script (format "mkdir -p %s && cd %s" judge judge))
