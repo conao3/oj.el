@@ -326,7 +326,7 @@ NAME is also whole URL to login."
           nil nil "abc167")))
   (let ((url (if (string-prefix-p "http" name) name (oj--shortname-to-url name))))
     (let* ((dirs (oj--url-to-dirs url))
-           (path (mapconcat #'identity dirs "/")))
+           (path (expand-file-name (mapconcat #'identity dirs "/") oj-home-dir)))
       (oj--exec-script
        (format "mkdir -p %s && cd %s" path path))
       (oj--exec-script
