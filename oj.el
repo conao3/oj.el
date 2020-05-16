@@ -337,12 +337,14 @@ NAME is also whole URL to login."
   "Run test at DIR."
   (interactive)
   (let* ((alist (quickrun--command-info
-                (quickrun--command-key (buffer-file-name))))
-         (spec (quickrun--template-argument alist (buffer-file-name))))
+                 (quickrun--command-key (buffer-file-name))))
+         (spec (mapcar (lambda (elm)
+                         `(,(string-to-char (substring (car elm) 1)) . ,(cdr elm)))
+                       (quickrun--template-argument alist (buffer-file-name)))))
     (when-let (fmt (alist-get :compile-only alist))
       (oj--exec-script (format-spec fmt spec))))
   (when dir (oj--exec-script (format "cd %s" dir)))
-  (oj--exec-script "atcoder-tools test"))
+  (oj--exec-script "oj test"))
 
 (defun oj-submit (&optional dir)
   "Submit code at DIR."
