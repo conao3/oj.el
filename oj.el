@@ -323,11 +323,11 @@ NAME is also whole URL to login."
           nil nil "abc167")))
   (let ((url (if (string-match "http" name) name (oj--shortname-to-url name))))
     (oj--exec-script (format "mkdir -p %s && cd %s" oj-home-dir oj-home-dir))
-    (if-let (judge (oj--url-to-online-judge url))
-        (progn
-          (oj--exec-script (format "mkdir -p %s && cd %s" judge judge))
-          (oj--exec-script (format "oj download %s -d %s" url (oj--url-to-dirname url))))
-      (oj--exec-script (format "oj download %s" url)))))
+    (let ((judge (oj--url-to-online-judge url)))
+      (if (not judge)
+          (oj--exec-script (format "oj download %s" url))
+        (oj--exec-script (format "mkdir -p %s && cd %s" judge judge))
+        (oj--exec-script (format "oj download %s -d %s" url (oj--url-to-dirname url)))))))
 
 (defun oj-test (&optional dir)
   "Run test at DIR."
