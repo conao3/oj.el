@@ -146,117 +146,110 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
          sym)))
    oj-online-judges))
 
-(defun oj--url-to-info (url)
-  "Detect suitable command/dir/dirname from URL.
-Return alist.
-  - command (optional; default \"oj\"): \"oj-template\"
-  - command args (optional)           : nil
-  - dir                               : (\"atcoder\" \"abc167\")"
+(defun oj--url-to-dirs (url)
+  "Detect suitable dirs from URL."
   (or
    ;; http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=ITP1_8_C
    ;; http://judge.u-aizu.ac.jp/onlinejudge/description.jsp
    (and (string-match
          "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp\\?id=\\([^/]+\\)" url)
-        `((dir . ("aizu" ,(match-string 1 url)))))
+        `("aizu" ,(match-string 1 url)))
    (and (string-match
          "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp" url)
-        `((dir . ("aizu" "1000"))))
+        `("aizu" "1000"))
 
    ;; https://onlinejudge.u-aizu.ac.jp/courses/lesson/2/ITP1/1/ITP1_1_A
    (and (string-match
          "https://onlinejudge.u-aizu.ac.jp/courses/[^/]*/[^/]*/[^/]*/[^/]*/\\([^/]+\\)/?" url)
-        `((dir . ("aizu" ,(match-string 1 url)))))
+        `("aizu" ,(match-string 1 url)))
 
    ;; http://golf.shinh.org/p.rb?hello+world
    (and (string-match
          "http://golf.shinh.org/p.rb\\?\\([^/]+\\)" url)
-        `((dir . ("anrchy-golf" ,(replace-regexp-in-string "\\+" "_" (match-string 1 url))))))
+        `("anrchy-golf" ,(replace-regexp-in-string "\\+" "_" (match-string 1 url))))
 
    ;; https://atcoder.jp/contests/abc167/tasks/abc167_a
    ;; https://atcoder.jp/contests/abc167
    (and (string-match
          "https://atcoder.jp/contests/[^/]*/tasks/\\([^/]+\\)/?" url)
-        `((dir . ("atcoder" ,(match-string 1 url)))))
+        `("atcoder" ,(match-string 1 url)))
    (and (string-match
          "https://atcoder.jp/contests/\\([^/]+\\)/?" url)
-        `((command . "oj-prepare")
-          (dir . ("atcoder" ,(match-string 1 url)))))
+        `("atcoder" ,(match-string 1 url)))
 
    ;; https://codeforces.com/contest/1349/problem/A
    (and (string-match
          "https://codeforces.com/contest/\\([^/]+\\)/problem/\\([^/]+\\)/?" url)
-        `((dir . ("codeforces" ,(format "%s_%s" (match-string 1 url) (match-string 2 url))))))
+        `("codeforces" ,(format "%s_%s" (match-string 1 url) (match-string 2 url))))
    (and (string-match
          "https://codeforces.com/contest/\\([^/]+\\)/?" url)
-        `((command . "oj-prepare")
-          (dir . ("codeforces" ,(match-string 1 url)))))
+        `("codeforces" ,(match-string 1 url)))
 
    ;; https://csacademy.com/contest/interview-archive/task/3-divisible-pairs/
    ;; https://csacademy.com/contest/archive/task/gcd/
    (and (string-match
          "https://csacademy.com/contest/[^/]+/task/\\([^/]+\\)/?" url)
-        `((dir . ("cs-academy" ,(match-string 1 url)))))
+        `("cs-academy" ,(match-string 1 url)))
 
    ;; https://www.hackerrank.com/challenges/c-tutorial-basic-data-types
    ;; https://www.hackerrank.com/challenges/c-tutorial-basic-data-types/problem
    ;; https://www.hackerrank.com/contests/projecteuler/challenges/euler254/problem
    (and (string-match
          "https://www.hackerrank.com/challenges/\\([^/]+\\)/?\\(problem\\)?" url)
-        `((dir . ("hackerrank" ,(match-string 1 url)))))
+        `("hackerrank" ,(match-string 1 url)))
    (and (string-match
          "https://www.hackerrank.com/contests/\\([^/]+\\)/challenges/\\([^/]+\\)/?\\(problem\\)?" url)
-        `((dir . ("hackerrank" ,(format "%s_%s" (match-string 1 url) (match-string 2 url))))))
+        `("hackerrank" ,(format "%s_%s" (match-string 1 url) (match-string 2 url))))
    (and (string-match
          "https://www.hackerrank.com/contests/\\([^/]+\\)/?" url)
-        `((command . "oj-prepare")
-          (dir . ("hackerrank" ,(match-string 1 url)))))
+        `("hackerrank" ,(match-string 1 url)))
 
    ;; https://open.kattis.com/problems/hello
    (and (string-match
          "https://open.kattis.com/problems/\\([^/]+\\)/?" url)
-        `((dir . ("kattis" ,(match-string 1 url)))))
+        `("kattis" ,(match-string 1 url)))
 
    ;; http://poj.org/problem?id=1000
    (and (string-match
          "http://poj.org/problem\\?id=\\([^/]+\\)" url)
-        `((dir . ("poj" ,(match-string 1 url)))))
+        `("poj" ,(match-string 1 url)))
 
    ;; https://www.topcoder.com/challenges/30125517
    (and (string-match
          "https://www.topcoder.com/challenges/\\([^/]+\\)/?" url)
-        `((dir . ("topcoder" ,(match-string 1 url)))))
+        `("topcoder" ,(match-string 1 url)))
 
    ;; https://toph.co/p/count-the-chaos
    (and (string-match
          "https://toph.co/p/\\([^/]+\\)/?" url)
-        `((dir . ("toph" ,(match-string 1 url)))))
+        `("toph" ,(match-string 1 url)))
 
    ;; https://www.codechef.com/problems/TREEMX
    (and (string-match
          "https://www.codechef.com/problems/\\([^/]+\\)/?" url)
-        `((dir . ("codechef" ,(match-string 1 url)))))
+        `("codechef" ,(match-string 1 url)))
 
    ;; https://www.spoj.com/problems/TEST/
    ;; https://www.spoj.com/problems/PRIME1/
    (and (string-match
          "https://www.spoj.com/problems/\\([^/]+\\)/?" url)
-        `((dir . ("soj" ,(match-string 1 url)))))
+        `("soj" ,(match-string 1 url)))
 
    ;; https://yukicoder.me/contests/262
    ;; https://yukicoder.me/problems/no/1046
    (and (string-match
          "https://yukicoder.me/contests/\\([^/]+\\)/?" url)
-        `((dir . ("yukicoder" ,(match-string 1 url)))))
+        `("yukicoder" ,(match-string 1 url)))
    (and (string-match
          "https://yukicoder.me/problems/no/\\([^/]+\\)/?" url)
-        `((dir . ("yukicoder" ,(match-string 1 url)))))
+        `("yukicoder" ,(match-string 1 url)))
 
    ;; https://judge.yosupo.jp/problem/aplusb
    (and (string-match
          "https://judge.yosupo.jp/problem/\\([^/]+\\)/?" url)
-        `((dir . ("library-checker" ,(match-string 1 url)))))
+        `("library-checker" ,(match-string 1 url)))
 
-   '((dir . ("test")))))
+   `("test")))
 
 (defun oj--shortname-to-url (shortname &optional judge)
   "Convert SHORTNAME to URL for JUDGE.
@@ -332,12 +325,13 @@ NAME is also whole URL to login."
           (format "Contest name (`abc167' for %s, or URL): " oj-default-online-judge)
           nil nil "abc167")))
   (let ((url (if (string-prefix-p "http" name) name (oj--shortname-to-url name))))
-    (oj--exec-script (format "mkdir -p %s && cd %s" oj-home-dir oj-home-dir))
-    (let-alist (oj--url-to-info url)
-      (if (not judge)
-          (oj--exec-script (format "oj download %s" url))
-        (oj--exec-script (format "mkdir -p %s && cd %s" judge judge))
-        (oj--exec-script (format "oj download %s -d %s" url (oj--url-to-dirname url)))))))
+    (let* ((dirs (oj--url-to-dirs url))
+           (path (mapconcat #'identity dirs "/")))
+      (oj--exec-script
+       (format "mkdir -p %s && cd %s" path path))
+      (oj--exec-script
+       (concat
+        (format "oj-prepare %s" url))))))
 
 (defun oj-test (&optional dir)
   "Run test at DIR."
