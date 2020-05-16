@@ -334,7 +334,7 @@ NAME is also whole URL to login."
         (format "oj-prepare %s" url))))))
 
 (defun oj-test ()
-  "Run test at DIR."
+  "Run test."
   (interactive)
   (oj--exec-script (format "cd %s" default-directory))
   (let* ((alist (quickrun--command-info
@@ -346,11 +346,11 @@ NAME is also whole URL to login."
       (oj--exec-script (format-spec fmt spec))))
   (oj--exec-script "oj test"))
 
-(defun oj-submit (&optional dir)
-  "Submit code at DIR."
+(defun oj-submit ()
+  "Submit code."
   (interactive)
-  (when dir (oj--exec-script (format "cd %s" dir)))
-  (oj--exec-script "atcoder-tools submit"))
+  (oj--exec-script (format "cd %s" default-directory))
+  (oj--exec-script (format "oj submit %s" (buffer-file-name))))
 
 (provide 'oj)
 
