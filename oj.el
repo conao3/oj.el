@@ -48,6 +48,151 @@
   :group 'oj
   :type 'directory)
 
+(defcustom oj-login-args nil
+  "Args for `oj-generate'.
+
+usage: oj login [-h] [-u USERNAME] [-p PASSWORD]
+[--check] [--use-browser {always,auto,never}] url
+
+positional arguments:
+  url
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -u USERNAME, --username USERNAME
+  -p PASSWORD, --password PASSWORD
+  --check               check whether you are logged in or not
+  --use-browser {always,auto,never}
+                        specify whether it uses a GUI web browser
+                        to login or not  (default: auto)"
+  :group 'oj
+  :type '(repeat string))
+
+(defcustom oj-prepare-args nil
+  "Args for `oj-prepare'.
+
+usage: oj-prepare [-h] [-v] [-c COOKIE] [--config-file CONFIG_FILE] url
+
+positional arguments:
+  url
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --verbose
+  -c COOKIE, --cookie COOKIE
+  --config-file CONFIG_FILE
+             default: ~/.config/online-judge-tools/prepare.config.toml"
+  :group 'oj
+  :type '(repeat string))
+
+(defcustom oj-test-args nil
+  "Args for `oj-generate'.
+
+usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY] [-m
+               {simple,side-by-side}] [-S] [--no-rstrip]
+               [--rstrip] [-s] [-e ERROR] [-t TLE] [--mle MLE]
+               [-i] [-j N] [--print-memory] [--gnu-time GNU_TIME]
+               [--no-ignore-backup] [--ignore-backup] [--json]
+               [--judge-command JUDGE] [test [test ...]]
+
+positional arguments:
+  test                  paths of test cases. (if empty: globbed from --format)
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c COMMAND, --command COMMAND
+                        your solution to be tested.  (default: \"./a.out\")
+  -f FORMAT, --format FORMAT
+                        a format string to recognize the relationship of
+                        test cases.  (default: \"%s.%e\")
+  -d DIRECTORY, --directory DIRECTORY
+                        a directory name for test cases (default: test/)
+  -m {simple,side-by-side}, --display-mode {simple,side-by-side}
+                        mode to display an output with the correct answer
+                        (default: simple)
+  -S, --side-by-side    display an output and the correct answer with
+                        side byside mode
+                        (equivalent to --display-mode side-by-side)
+  --no-rstrip
+  --rstrip              rstrip output before compare (default)
+  -s, --silent          don't report output and correct answer even if not AC
+                        (for --mode all)
+  -e ERROR, --error ERROR
+                        check as floating point number: correct if its absolute
+                        or relative error doesn't exceed it
+  -t TLE, --tle TLE     set the time limit (in second) (default: inf)
+  --mle MLE             set the memory limit (in megabyte) (default: inf)
+  -i, --print-input     print input cases if not AC
+  -j N, --jobs N        specifies the number of jobs to run simultaneously
+                        (default: no parallelization)
+  --print-memory        print the amount of memory which your program used,
+                        even if it is small enough
+  --gnu-time GNU_TIME   used to measure memory consumption (default: \"time\")
+  --no-ignore-backup
+  --ignore-backup       ignore backup files and hidden files
+                        (i.e. files like \"*~\", \"\\#*\\#\" and \".*\")
+                        (default)
+  --json
+  --judge-command JUDGE
+                        specify judge command instead of default diff judge.
+                        See https://online-judge-tools.readthedocs.io/en/
+                              master/introduction.en.html
+                              #test-for-special-forms-of-problem for details
+
+format string for --format:
+  %s                    name
+  %e                    extension: \"in\" or \"out\"
+  (both %s and %e are required.)
+
+tips:
+  You can do similar things with shell: e.g.
+ `for f in test/*.in ; do echo $f ; diff <(./a.out < $f) ${f/.in/.out} ; done`"
+  :group 'oj
+  :type '(repeat string))
+
+(defcustom oj-submit-args '("-y")
+  "Args for `oj-generate'.
+
+usage: oj submit [-h] [-l LANGUAGE] [--no-guess] [-g]
+                 [--no-guess-latest] [--guess-cxx-latest]
+                 [--guess-cxx-compiler {gcc,clang,all}]
+                 [--guess-python-version {2,3,auto,all}]
+                 [--guess-python-interpreter {cpython,pypy,all}]
+                 [--format-dos2unix] [--format-rstrip] [-G]
+                 [--no-open] [--open] [-w SECOND] [-y] [url] file
+
+positional arguments:
+  url                   the URL of the problem to submit.
+                        if not given, guessed from history of download command.
+  file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l LANGUAGE, --language LANGUAGE
+                        narrow down language choices if ambiguous
+  --no-guess
+  -g, --guess           guess the language for your file (default)
+  --no-guess-latest
+  --guess-cxx-latest    use the lasest version for C++ (default)
+  --guess-cxx-compiler {gcc,clang,all}
+                        use the specified C++ compiler if both of GCC and
+                        Clang are available (default: gcc)
+  --guess-python-version {2,3,auto,all}
+                        default: auto
+  --guess-python-interpreter {cpython,pypy,all}
+                        use the specified Python interpreter if both of CPython
+                        and PyPy are available (default: cpython)
+  --format-dos2unix     replace CRLF with LF for given file
+  --format-rstrip       remove trailing newlines from given file
+  -G, --golf            now equivalent to --format-dos2unix --format-rstrip
+  --no-open
+  --open                open the result page after submission (default)
+  -w SECOND, --wait SECOND
+                        sleep before submitting
+  -y, --yes             don't confirm"
+  :group 'oj
+  :type '(repeat string))
+
 (defcustom oj-default-online-judge 'atcoder
   "Default online judge service."
   :group 'oj
@@ -316,10 +461,14 @@ NAME is also whole URL to login."
   (let ((url (if (string-match "/" name)
                  name
                (alist-get 'url (alist-get (intern name) oj-online-judges)))))
-    (oj--exec-script (format "oj login %s" url))))
+    (oj--exec-script
+     (concat
+      (format "oj login %s" url)
+      (when oj-login-args
+        (format " %s" (mapconcat #'identity oj-login-args " ")))))))
 
-(defun oj-generate (name)
-  "Generate new NAME working folder."
+(defun oj-prepare (name)
+  "Prepare new NAME working folder."
   (interactive
    (list (read-string
           (format "Contest name (`abc167' for %s, or URL): " oj-default-online-judge)
@@ -331,7 +480,9 @@ NAME is also whole URL to login."
        (format "mkdir -p %s && cd %s" path path))
       (oj--exec-script
        (concat
-        (format "oj-prepare %s" url))))))
+        (format "oj-prepare %s" url)
+        (when oj-prepare-args
+          (format " %s" (mapconcat #'identity oj-prepare-args " "))))))))
 
 (defun oj-test ()
   "Run test."
@@ -344,13 +495,21 @@ NAME is also whole URL to login."
                        (quickrun--template-argument alist (buffer-file-name)))))
     (when-let (fmt (alist-get :compile-only alist))
       (oj--exec-script (format-spec fmt spec))))
-  (oj--exec-script "oj test"))
+  (oj--exec-script
+   (concat
+    "oj test"
+    (when oj-test-args
+      (format " %s" (mapconcat #'identity oj-test-args " "))))))
 
 (defun oj-submit ()
   "Submit code."
   (interactive)
   (oj--exec-script (format "cd %s" default-directory))
-  (oj--exec-script (format "oj submit %s" (buffer-file-name))))
+  (oj--exec-script
+   (concat
+    (format "oj submit %s" (buffer-file-name))
+    (when oj-submit-args
+      (format " %s" (mapconcat #'identity oj-submit-args " "))))))
 
 (provide 'oj)
 
