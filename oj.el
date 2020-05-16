@@ -473,16 +473,16 @@ NAME is also whole URL to login."
    (list (read-string
           (format "Contest name (`abc167' for %s, or URL): " oj-default-online-judge)
           nil nil "abc167")))
-  (let ((url (if (string-prefix-p "http" name) name (oj--shortname-to-url name))))
-    (let* ((dirs (oj--url-to-dirs url))
-           (path (expand-file-name (mapconcat #'identity dirs "/") oj-home-dir)))
-      (oj--exec-script
-       (format "mkdir -p %s && cd %s" path path))
-      (oj--exec-script
-       (concat
-        (format "oj-prepare %s" url)
-        (when oj-prepare-args
-          (format " %s" (mapconcat #'identity oj-prepare-args " "))))))))
+  (let* ((url (if (string-prefix-p "http" name) name (oj--shortname-to-url name)))
+         (dirs (oj--url-to-dirs url))
+         (path (expand-file-name (mapconcat #'identity dirs "/") oj-home-dir)))
+    (oj--exec-script
+     (format "mkdir -p %s && cd %s" path path))
+    (oj--exec-script
+     (concat
+      (format "oj-prepare %s" url)
+      (when oj-prepare-args
+        (format " %s" (mapconcat #'identity oj-prepare-args " ")))))))
 
 (defun oj-test ()
   "Run test."
