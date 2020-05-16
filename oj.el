@@ -333,9 +333,10 @@ NAME is also whole URL to login."
        (concat
         (format "oj-prepare %s" url))))))
 
-(defun oj-test (&optional dir)
+(defun oj-test ()
   "Run test at DIR."
   (interactive)
+  (oj--exec-script (format "cd %s" default-directory))
   (let* ((alist (quickrun--command-info
                  (quickrun--command-key (buffer-file-name))))
          (spec (mapcar (lambda (elm)
@@ -343,7 +344,6 @@ NAME is also whole URL to login."
                        (quickrun--template-argument alist (buffer-file-name)))))
     (when-let (fmt (alist-get :compile-only alist))
       (oj--exec-script (format-spec fmt spec))))
-  (when dir (oj--exec-script (format "cd %s" dir)))
   (oj--exec-script "oj test"))
 
 (defun oj-submit (&optional dir)
