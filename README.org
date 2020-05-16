@@ -29,34 +29,38 @@ Competitive programming tools client for AtCoder, Codeforces.
 Now support below online judges and feature.
 #+begin_src emacs-lisp
   (defvar oj-online-judges
-    '((aoj-arena         . ((name . "Aizu Online Judge (Arena)") (url . "https://onlinejudge.u-aizu.ac.jp/services/arena.html")))
-      (aoj               . ((name . "Aizu Online Judge")         (url . "https://onlinejudge.u-aizu.ac.jp/home")))
-      (anrchy-golf       . ((name . "Anarchy Golf")              (url . "http://golf.shinh.org/")))
-      (atcoder           . ((name . "AtCoder")                   (url . "https://atcoder.jp/")))
-      (codeforces        . ((name . "Codeforces")                (url . "https://codeforces.com/")))
-      (cs-academy        . ((name . "CS Academy")                (url . "https://csacademy.com/")))
-      (facebook          . ((name . "Facebook Hacker Cup")       (url . "https://www.facebook.com/hackercup/")))
-      (hackerrank        . ((name . "HackerRank")                (url . "https://www.hackerrank.com/")))
-      (kattis            . ((name . "Kattis")                    (url . "https://open.kattis.com/")))
-      (pku               . ((name . "PKU JudgeOnline")           (url . "http://poj.org/")))
-      (topcoder          . ((name . "Topcoder")                  (url . "https://www.topcoder.com/")))
-      (toph              . ((name . "Toph (Problem Archive)")    (url . "https://toph.co/")))
-      (codechef          . ((name . "CodeChef")                  (url . "https://www.codechef.com/")))
-      (soj               . ((name . "Sphere online judge")       (url . "https://www.spoj.com/")))
-      (yukicoder         . ((name . "yukicoder")                 (url . "https://yukicoder.me/")))
-      (library-checker   . ((name . "Library Checker")           (url . "https://judge.yosupo.jp/"))))
+    '((aoj                . ((name . "Aizu Online Judge")        (url . "https://onlinejudge.u-aizu.ac.jp/")))
+      (aoj2               . ((name . "Aizu Online Judge (Beta)") (url . "https://onlinejudge.u-aizu.ac.jp/courses/")))
+      (anrchy-golf        . ((name . "Anarchy Golf")             (url . "http://golf.shinh.org/p.rb?")))
+      (atcoder            . ((name . "AtCoder")                  (url . "https://atcoder.jp/contests/")))
+      (codeforces         . ((name . "Codeforces")               (url . "https://codeforces.com/contests/")))
+      (cs-academy         . ((name . "CS Academy")               (url . "https://csacademy.com/contests/")))
+      (facebook           . ((name . "Facebook Hacker Cup")      (url . "https://www.facebook.com/hackercup/")))
+      (hackerrank         . ((name . "HackerRank")               (url . "https://www.hackerrank.com/challenges/")))
+      (hackerrank-contest . ((name . "HackerRank Contest")       (url . "https://www.hackerrank.com/contests/")))
+      (kattis             . ((name . "Kattis")                   (url . "https://open.kattis.com/probrems/")))
+      (poj                . ((name . "PKU JudgeOnline")          (url . "http://poj.org/problem?id=")))
+      (topcoder           . ((name . "Topcoder")                 (url . "https://www.topcoder.com/challenges/")))
+      (toph               . ((name . "Toph (Problem Archive)")   (url . "https://toph.co/p/")))
+      (codechef           . ((name . "CodeChef")                 (url . "https://www.codechef.com/problems/")))
+      (soj                . ((name . "Sphere online judge")      (url . "https://www.spoj.com/problems/")))
+      (yukicoder          . ((name . "yukicoder")                (url . "https://yukicoder.me/problems/no/")))
+      (yukicoder-contest  . ((name . "yukicoder Contest")        (url . "https://yukicoder.me/contests/")))
+      (library-checker    . ((name . "Library Checker")          (url . "https://judge.yosupo.jp/problem/"))))
     "Supported online judges.
 
   - Download sample cases
     (aoj-arena aoj anrchy-golf atcoder codeforces
-     cs-academy facebook hackerrank kattis pku toph
+     cs-academy facebook hackerrank kattis poj toph
      codechef soj yukicoder library-checker)
 
   - Download system cases
     (aoj yukicoder)
 
   - Submit solution source code
-    (atcoder codeforces topcoder hackerrank toph)")
+    (atcoder codeforces topcoder hackerrank toph)
+
+  NOTE: online-judge symbol MUST NOT include slash (\"/\").")
 #+end_src
 
 * Install
