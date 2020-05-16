@@ -49,7 +49,7 @@
   :type 'directory)
 
 (defcustom oj-login-args nil
-  "Args for `oj-generate'.
+  "Args for `oj-login'.
 
 usage: oj login [-h] [-u USERNAME] [-p PASSWORD]
 [--check] [--use-browser {always,auto,never}] url
@@ -86,7 +86,7 @@ optional arguments:
   :type '(repeat string))
 
 (defcustom oj-test-args nil
-  "Args for `oj-generate'.
+  "Args for `oj-test'.
 
 usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY] [-m
                {simple,side-by-side}] [-S] [--no-rstrip]
@@ -151,7 +151,7 @@ tips:
   :type '(repeat string))
 
 (defcustom oj-submit-args '("-y")
-  "Args for `oj-generate'.
+  "Args for `oj-submit'.
 
 usage: oj submit [-h] [-l LANGUAGE] [--no-guess] [-g]
                  [--no-guess-latest] [--guess-cxx-latest]
@@ -193,7 +193,7 @@ optional arguments:
   :group 'oj
   :type '(repeat string))
 
-(defcustom oj-default-online-judge 'atcoder
+(defcustom oj-default-online-judge 'codeforces
   "Default online judge service."
   :group 'oj
   :type
@@ -427,7 +427,7 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
 
 ;;; Main
 
-(defun oj-install-package ()
+(defun oj-install-packages ()
   "Install `oj', `oj-template', `selenium' pip package via `pip3'."
   (interactive)
   (unless (yes-or-no-p "Install `oj', `oj-template', `selenium' via pip3?")

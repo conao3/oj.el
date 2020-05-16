@@ -24,7 +24,7 @@
   - [[#contributors][Contributors]]
 
 * Description
-Competitive programming tools client for AtCoder, Codeforces.
+Competitive programming tools([[https://github.com/online-judge-tools/oj][oj]], [[https://github.com/online-judge-tools/template-generator][oj-template]]) client for AtCoder, Codeforces, and more!
 
 Now support below online judges and feature.
 #+begin_src emacs-lisp
@@ -65,48 +65,383 @@ Now support below online judges and feature.
 
 * Install
 #+begin_src emacs-lisp
-  (leaf oj :ensure t)
+  (leaf oj
+    :ensure t
+    :custom ((oj-default-online-judge . 'codeforces)))
 #+end_src
 
 * Usage
+** oj-install-package
+This package requires [[https://github.com/online-judge-tools/oj][oj]], [[https://github.com/online-judge-tools/template-generator][oj-template]], [[https://github.com/SeleniumHQ/selenium][selenium]].
 
-* Customize
-** Template file
-In [[https://github.com/kyuridenamida/atcoder-tools][atcoder-tools]], you can use template file for auto generate source code.
+You can install these tools via =M-x oj-install-packages=.
 
-=oj= will specify =--template= argument automatically if you locate =OJ-HOME-DIR/template/template.{{ext}}= file like below.
+#+begin_src emacs-lisp
+  (defun oj-install-packages ()
+    "Install `oj', `oj-template', `selenium' pip package via `pip3'."
+    (interactive)
+    (unless (yes-or-no-p "Install `oj', `oj-template', `selenium' via pip3?")
+      (error "Abort install"))
+    (dolist (elm '(("oj" . "online-judge-tools")
+                   ("oj-template" . "online-judge-template-generator")
+                   ("selenium" . "selenium")))
+      (unless (executable-find (car elm))
+        (unless (executable-find "python3")
+          (error "Missing `python3'.  Please ensure Emacs's PATH and the installing"))
+        (unless (executable-find "pip3")
+          (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
+        (oj--exec-script (format "pip3 install %s" (cdr elm))))))
+#+end_src
 
-#+begin_src cpp
+But if you want to install via this funciton, you can install them by your command-line shell.
+
+#+begin_src shell
+  pip3 install online-judge-tools
+  pip3 install online-judge-template-generator
+  pip3 install selenium
+#+end_src
+
+And then, make sure that the Emacs's =PATH= is set up properly.
+=M-! which oj= returns some path to =oj= executable, your Emacs can use it.
+If you get no output, please see [[https://emacs.stackexchange.com/questions/550/exec-path-and-path][Q&A]] or consider to use [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]].
+
+** oj-prepare
+=M-x oj-prepare= is first step to use this package.
+
+This command accept below format.
+- Problem URL: https://codeforces.com/contest/1349/problem/A
+- Contest URL: https://codeforces.com/contest/1349/
+- Problem shortcode (for =oj-defualt-online-judge=): 1349/A
+- Contest shortcode (for =oj-default-online-judge=): 1349
+
+** Edit your code
+Template files are generated in =oj-home-dir=, open file and edit it.
+#+begin_src shell
+  $ tree codeforces/
+  codeforces/
+  └── 1349
+      ├── A
+      │   ├── a.out
+      │   ├── geckodriver.log
+      │   ├── generate.py
+      │   ├── main.cpp
+      │   ├── main.py
+      │   └── test
+      │       ├── sample-1.in
+      │       ├── sample-1.out
+      │       ├── sample-2.in
+      │       ├── sample-2.out
+      │       ├── sample-3.in
+      │       └── sample-3.out
+      ...
+      └── F2
+          ├── generate.py
+          ├── main.cpp
+          ├── main.py
+          └── test
+              ├── sample-1.in
+              ├── sample-1.out
+              ├── sample-2.in
+              ├── sample-2.out
+              ├── sample-3.in
+              └── sample-3.out
+
+  $ cat codeforces/1349/A/main.cpp
   #include <bits/stdc++.h>
+
   using namespace std;
 
-  {% if mod %}
-  const long long MOD = {{ mod }};
-  {% endif %}
-  {% if yes_str %}
-  const string YES = "{{ yes_str }}";
-  {% endif %}
-  {% if no_str %}
-  const string NO = "{{ no_str }}";
-  {% endif %}
+  #define ll long long
+  #define ld long double
+  #define v vector
 
-  {% if prediction_success %}
-  void solve({{ formal_arguments }}){
+  #define rep(i, n)      for (int i = 0; i < (int)(n); ++i)
+  #define rep3(i, m, n)  for (int i = (m); i < (int)(n); ++i)
+  #define rrep(i, n)     for (int i = (int)(n)-1; i >= 0; --i)
+  #define rrep3(i, m, n) for (int i = (int)(n)-1; i >= (m); --i)
+  #define all(x) x.begin(), x.end()
+  #define rall(x) x.end(x), x.begin()
 
+  #define endl '\n'
+
+
+  ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
+
+  ll solve(int ebd, const vector<ll> & zdf) {
+      // TODO: edit here
   }
-  {% endif %}
 
-  int main(){
-      {% if prediction_success %}
-      {{input_part}}
-      solve({{ actual_arguments }});
-      {% else %}
-      {% endif %}
+  int main() {
+      ios::sync_with_stdio(false);
+      cin.tie(nullptr);
+
+      int ebd;
+      cin >> ebd;
+      vector<ll> zdf(ebd);
+      rep (i, ebd) {
+          cin >> zdf[i];
+      }
+
+      auto ans = solve(ebd, zdf);
+      cout << ans << endl;
+
+      return 0;
+  }            
+#+end_src
+
+** oj-test
+=M-x oj-test= do =compile= and =test= your code.
+
+If your code pass testcases, get below output in =*oj*= buffer.
+
+#+begin_src shell
+  [*] 3 cases found
+  [!] GNU time is not available: time
+
+  [*] sample-1
+  [x] time: 0.001666 sec
+  [+] AC
+
+  [*] sample-2
+  [x] time: 0.002213 sec
+  [+] AC
+
+  [*] sample-3
+  [x] time: 0.001923 sec
+  [+] AC
+
+  [x] slowest: 0.002213 sec  (for sample-2)
+  [+] test success: 3 cases
+#+end_src
+
+** oj-submit
+=M-x oj-submit= submit your code to online judge.
+(The first time, you need =M-x oj-login= per online judges.)
+
+* Customize
+** Variables
+- oj-shell-program :: A path to shell executable used =*oj*= buffer.  (default =shell-file-name= (=bash= or some customized shell))
+- oj-home-dir :: A path for generate files.  (default ="~/.emacs.d/oj/"=)
+- oj-default-online-judge :: A online-judge used for guessing.  (default ='codeforces=)
+- oj-login-args :: Args for =oj login=.  (default =nil=)
+
+  #+begin_src text
+    usage: oj login [-h] [-u USERNAME] [-p PASSWORD]
+    [--check] [--use-browser {always,auto,never}] url
+
+    positional arguments:
+      url
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -u USERNAME, --username USERNAME
+      -p PASSWORD, --password PASSWORD
+      --check               check whether you are logged in or not
+      --use-browser {always,auto,never}
+                            specify whether it uses a GUI web browser
+                            to login or not  (default: auto)
+  #+end_src
+- oj-prepare-args :: Args for =oj-prepare=.  (default =nil=)
+
+  #+begin_src text
+    Args for `oj-prepare'.
+
+    usage: oj-prepare [-h] [-v] [-c COOKIE] [--config-file CONFIG_FILE] url
+
+    positional arguments:
+      url
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --verbose
+      -c COOKIE, --cookie COOKIE
+      --config-file CONFIG_FILE
+                 default: ~/.config/online-judge-tools/prepare.config.toml
+  #+end_src
+- oj-test-args :: Args for =oj test=.  (default =nil=)
+
+  #+begin_src text
+    Args for `oj-test'.
+
+    usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY] [-m
+                   {simple,side-by-side}] [-S] [--no-rstrip]
+                   [--rstrip] [-s] [-e ERROR] [-t TLE] [--mle MLE]
+                   [-i] [-j N] [--print-memory] [--gnu-time GNU_TIME]
+                   [--no-ignore-backup] [--ignore-backup] [--json]
+                   [--judge-command JUDGE] [test [test ...]]
+
+    positional arguments:
+      test                  paths of test cases. (if empty: globbed from --format)
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -c COMMAND, --command COMMAND
+                            your solution to be tested.  (default: "./a.out")
+      -f FORMAT, --format FORMAT
+                            a format string to recognize the relationship of
+                            test cases.  (default: "%s.%e")
+      -d DIRECTORY, --directory DIRECTORY
+                            a directory name for test cases (default: test/)
+      -m {simple,side-by-side}, --display-mode {simple,side-by-side}
+                            mode to display an output with the correct answer
+                            (default: simple)
+      -S, --side-by-side    display an output and the correct answer with
+                            side byside mode
+                            (equivalent to --display-mode side-by-side)
+      --no-rstrip
+      --rstrip              rstrip output before compare (default)
+      -s, --silent          don't report output and correct answer even if not AC
+                            (for --mode all)
+      -e ERROR, --error ERROR
+                            check as floating point number: correct if its absolute
+                            or relative error doesn't exceed it
+      -t TLE, --tle TLE     set the time limit (in second) (default: inf)
+      --mle MLE             set the memory limit (in megabyte) (default: inf)
+      -i, --print-input     print input cases if not AC
+      -j N, --jobs N        specifies the number of jobs to run simultaneously
+                            (default: no parallelization)
+      --print-memory        print the amount of memory which your program used,
+                            even if it is small enough
+      --gnu-time GNU_TIME   used to measure memory consumption (default: "time")
+      --no-ignore-backup
+      --ignore-backup       ignore backup files and hidden files
+                            (i.e. files like "*~", "\#*\#" and ".*")
+                            (default)
+      --json
+      --judge-command JUDGE
+                            specify judge command instead of default diff judge.
+                            See https://online-judge-tools.readthedocs.io/en/
+                                  master/introduction.en.html
+                                  #test-for-special-forms-of-problem for details
+
+    format string for --format:
+      %s                    name
+      %e                    extension: "in" or "out"
+      (both %s and %e are required.)
+
+    tips:
+      You can do similar things with shell: e.g.
+     `for f in test/*.in ; do echo $f ; diff <(./a.out < $f) ${f/.in/.out} ; done`
+  #+end_src
+- oj-submit-args :: Args for =oj submit=.  (default ='("-y")=)
+
+  #+begin_src text
+    Args for `oj-submit'.
+
+    usage: oj submit [-h] [-l LANGUAGE] [--no-guess] [-g]
+                     [--no-guess-latest] [--guess-cxx-latest]
+                     [--guess-cxx-compiler {gcc,clang,all}]
+                     [--guess-python-version {2,3,auto,all}]
+                     [--guess-python-interpreter {cpython,pypy,all}]
+                     [--format-dos2unix] [--format-rstrip] [-G]
+                     [--no-open] [--open] [-w SECOND] [-y] [url] file
+
+    positional arguments:
+      url                   the URL of the problem to submit.
+                            if not given, guessed from history of download command.
+      file
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -l LANGUAGE, --language LANGUAGE
+                            narrow down language choices if ambiguous
+      --no-guess
+      -g, --guess           guess the language for your file (default)
+      --no-guess-latest
+      --guess-cxx-latest    use the lasest version for C++ (default)
+      --guess-cxx-compiler {gcc,clang,all}
+                            use the specified C++ compiler if both of GCC and
+                            Clang are available (default: gcc)
+      --guess-python-version {2,3,auto,all}
+                            default: auto
+      --guess-python-interpreter {cpython,pypy,all}
+                            use the specified Python interpreter if both of CPython
+                            and PyPy are available (default: cpython)
+      --format-dos2unix     replace CRLF with LF for given file
+      --format-rstrip       remove trailing newlines from given file
+      -G, --golf            now equivalent to --format-dos2unix --format-rstrip
+      --no-open
+      --open                open the result page after submission (default)
+      -w SECOND, --wait SECOND
+                            sleep before submitting
+      -y, --yes             don't confirm
+  #+end_src
+
+** Template file
+In [[https://github.com/online-judge-tools/template-generator#settings][oj]], you can use template file for auto generate source code.
+
+If you want use your customize template, you save like below file
+as =~/.config/online-judge-tools/template/template-ext.cpp=.
+#+begin_src cpp
+  <%!
+      import onlinejudge_template.generator.cplusplus as cplusplus
+      import onlinejudge_template.generator.about as about
+  %>\
+  <%
+      data['config']['rep_macro'] = 'rep'
+      data['config']['using_namespace_std'] = True
+      data['config']['long_long_int'] = 'll'
+  %>\
+  #include <iostream>
+  #include <string>
+  #include <vector>
+  #include <algorithm>
+  #include <utility>
+  #include <tuple>
+  #include <cstdint>
+  #include <cstdio>
+  #include <map>
+  #include <queue>
+  #include <set>
+  #include <stack>
+  #include <deque>
+  #include <unordered_map>
+  #include <unordered_set>
+  #include <bitset>
+  #include <cctype>
+
+  using namespace std;
+
+  #define ll long long
+  #define ld long double
+  #define v vector
+
+  #define rep(i, n)      for (int i = 0; i < (int)(n); ++i)
+  #define rep3(i, m, n)  for (int i = (m); i < (int)(n); ++i)
+  #define rrep(i, n)     for (int i = (int)(n)-1; i >= 0; --i)
+  #define rrep3(i, m, n) for (int i = (int)(n)-1; i >= (m); --i)
+  #define all(x) x.begin(), x.end()
+  #define rall(x) x.end(x), x.begin()
+
+  #define endl '\n'
+  ${cplusplus.declare_constants(data)}
+
+  ll gcd(ll a, ll b) { return b ? gcd(b, a % b) : a; }
+
+  ${cplusplus.return_type(data)} solve(${cplusplus.formal_arguments(data)}) {
+      // TODO: edit here
+  }
+
+  int main() {
+      ios::sync_with_stdio(false);
+      cin.tie(nullptr);
+
+  ${cplusplus.read_input(data)}
+
+      auto ${cplusplus.return_value(data)} = solve(${cplusplus.actual_arguments(data)});
+  ${cplusplus.write_output(data)}
+
       return 0;
   }
 #+end_src
 
-For more information, please see [[https://github.com/kyuridenamida/atcoder-tools#%E3%83%86%E3%83%B3%E3%83%97%E3%83%AC%E3%83%BC%E3%83%88%E3%81%AE%E4%BE%8B][atcoder-tools README]].
+And save below config toml as =~/.config/online-judge-tools/prepare.config.toml=.
+#+begin_src toml
+  [templates]
+  "main.py" = "main.py"
+  "main.cpp" = "template-ext.cpp"
+  "generate.py" = "generate.py"
+#+end_src
 
 * Information
 ** Community
