@@ -171,8 +171,8 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
    ;; https://atcoder.jp/contests/abc167/tasks/abc167_a
    ;; https://atcoder.jp/contests/abc167
    (and (string-match
-         "https://atcoder.jp/contests/[^/]*/tasks/\\([^/]+\\)/?" url)
-        `("atcoder" ,(match-string 1 url)))
+         "https://atcoder.jp/contests/\\([^/]+\\)/tasks/\\([^/]+\\)/?" url)
+        `("atcoder" ,(match-string 1 url) ,(match-string 2 url)))
    (and (string-match
          "https://atcoder.jp/contests/\\([^/]+\\)/?" url)
         `("atcoder" ,(match-string 1 url)))
