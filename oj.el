@@ -471,8 +471,7 @@ NAME is also whole URL to login."
   "Prepare new NAME working folder."
   (interactive
    (list (read-string
-          (format "Contest name (`abc167' for %s, or URL): " oj-default-online-judge)
-          nil nil "abc167")))
+          (format "Contest name (shortcode like `1349' or `1349/A' for %s, or URL): " oj-default-online-judge))))
   (let* ((url (if (string-prefix-p "http" name) name (oj--shortname-to-url name)))
          (dirs (oj--url-to-dirs url))
          (path (expand-file-name (mapconcat #'identity dirs "/") oj-home-dir)))
