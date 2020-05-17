@@ -85,7 +85,7 @@ optional arguments:
   :group 'oj
   :type '(repeat string))
 
-(defcustom oj-test-args nil
+(defcustom oj-test-args '("-c" "./main.out")
   "Args for `oj-test'.
 
 usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY] [-m
