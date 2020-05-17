@@ -24,6 +24,8 @@
   - [[#contributors][Contributors]]
 
 * Description
+[[https://github.com/conao3/oj.el][https://raw.githubusercontent.com/conao3/files/master/blob/oj.el/oj.gif]]
+
 Competitive programming tools([[https://github.com/online-judge-tools/oj][oj]], [[https://github.com/online-judge-tools/template-generator][oj-template]]) client for AtCoder, Codeforces, and more!
 
 Now support below online judges and feature.
