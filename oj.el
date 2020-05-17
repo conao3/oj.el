@@ -223,7 +223,7 @@ optional arguments:
     (facebook           . ((name . "Facebook Hacker Cup")      (url . "https://www.facebook.com/hackercup/")))
     (hackerrank         . ((name . "HackerRank")               (url . "https://www.hackerrank.com/challenges/")))
     (hackerrank-contest . ((name . "HackerRank Contest")       (url . "https://www.hackerrank.com/contests/")))
-    (kattis             . ((name . "Kattis")                   (url . "https://open.kattis.com/probrems/")))
+    (kattis             . ((name . "Kattis")                   (url . "https://open.kattis.com/problems/")))
     (poj                . ((name . "PKU JudgeOnline")          (url . "http://poj.org/problem?id=")))
     (topcoder           . ((name . "Topcoder")                 (url . "https://www.topcoder.com/challenges/")))
     (toph               . ((name . "Toph (Problem Archive)")   (url . "https://toph.co/p/")))
