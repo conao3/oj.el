@@ -99,7 +99,7 @@ optional arguments:
   :group 'oj
   :type '(repeat string))
 
-(defcustom oj-test-args '("-c" "./main.out")
+(defcustom oj-test-args '()
   "Args for `oj-test'.
 
 usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY] [-m
@@ -508,14 +508,17 @@ NAME is also whole URL to login."
                  (quickrun--command-key (buffer-file-name))))
          (spec (mapcar (lambda (elm)
                          `(,(string-to-char (substring (car elm) 1)) . ,(cdr elm)))
-                       (quickrun--template-argument alist (buffer-file-name)))))
-    (when-let (fmt (alist-get :compile-only alist))
-      (oj--exec-script (format-spec fmt spec))))
-  (oj--exec-script
-   (concat
-    "oj test"
-    (when oj-test-args
-      (format " %s" (mapconcat #'identity oj-test-args " "))))))
+                       (quickrun--template-argument alist (buffer-file-name))))
+         (exec (or (alist-get :exec alist)
+                   (alist-get :exec quickrun--default-tmpl-alist))))
+    (while (and (consp exec) (cdr exec)) ; has more than two commands
+      (oj--exec-script (format-spec (pop exec) spec)))
+    (oj--exec-script
+     (concat
+      "oj test"
+      (when oj-test-args
+        (format " %s" (mapconcat #'identity oj-test-args " ")))
+      " -c '" (format-spec (if (consp exec) (car exec) exec) spec) "'"))))
 
 (defun oj-submit ()
   "Submit code."
