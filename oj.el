@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  Naoya Yamashita
 
 ;; Author: Naoya Yamashita <conao3@gmail.com>
-;; Version: 1.0.0
+;; Version: 1.0.1
 ;; Keywords: convenience
 ;; Package-Requires: ((emacs "26.1") (quickrun "2.2"))
 ;; URL: https://github.com/conao3/oj.el
@@ -47,6 +47,20 @@
   "Directory path for `oj'."
   :group 'oj
   :type 'directory)
+
+(defcustom oj-compiler-c "gcc"
+  "Compiler name to submit for C/C++."
+  :group 'oj
+  :type '(choice
+          (const :tag "gcc/g++" "gcc")
+          (const :tag "clang/clang++" "clang")))
+
+(defcustom oj-compiler-python "cpython"
+  "Compiler name to submit for Python."
+  :group 'oj
+  :type '(choice
+          (const :tag "cpython" "cpython")
+          (const :tag "pypy" "pypy")))
 
 (defcustom oj-login-args nil
   "Args for `oj-login'.
@@ -152,6 +166,9 @@ tips:
 
 (defcustom oj-submit-args '("-y")
   "Args for `oj-submit'.
+
+Note: --guess-cxx-compiler and --guess-python-compiler is guessed
+from `oj-compiler-c' or `oj-compiler-python' or `quickrun' default.
 
 usage: oj submit [-h] [-l LANGUAGE] [--no-guess] [-g]
                  [--no-guess-latest] [--guess-cxx-latest]
@@ -503,12 +520,20 @@ NAME is also whole URL to login."
 (defun oj-submit ()
   "Submit code."
   (interactive)
-  (oj--exec-script (format "cd %s" default-directory))
-  (oj--exec-script
-   (concat
-    (format "oj submit %s" (buffer-file-name))
-    (when oj-submit-args
-      (format " %s" (mapconcat #'identity oj-submit-args " "))))))
+  (let ((alist (quickrun--command-info
+                (quickrun--command-key (buffer-file-name)))))
+    (oj--exec-script (format "cd %s" default-directory))
+    (oj--exec-script
+     (concat
+      (format "oj submit %s" (buffer-file-name))
+      (when oj-submit-args
+        (format " %s" (mapconcat #'identity oj-submit-args " ")))
+      (when (or (string= "clang" oj-compiler-c)
+                (string-match "clang" (alist-get :command alist)))
+        " --guess-cxx-compiler clang")
+      (when (or (string= "pypy" oj-compiler-python)
+                (string-match "pypy" (alist-get :command alist)))
+        " --guess-cxx-compiler pypy")))))
 
 (provide 'oj)
 

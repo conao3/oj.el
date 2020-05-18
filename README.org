@@ -225,6 +225,15 @@ If your code pass testcases, get below output in =*oj*= buffer.
 - oj-shell-program :: A path to shell executable used =*oj*= buffer.  (default =shell-file-name= (=bash= or some customized shell))
 - oj-home-dir :: A path for generate files.  (default ="~/.emacs.d/oj/"=)
 - oj-default-online-judge :: A online-judge used for guessing.  (default ='codeforces=)
+- oj-compiler-c :: Compiler name to submit for C/C++.  (default =gcc=)
+
+  If you want to also use Clang local, please add your init.el below.
+  #+begin_src emacs-lisp
+    (quickrun-set-default "c" "c/clang")
+    (quickrun-set-default "c++" "c++/clang++")
+  #+end_src
+
+- oj-compiler-python :: Compiler name to submit for Python.  (default =cpython=)
 - oj-login-args :: Args for =oj login=.  (default =nil=)
 
   #+begin_src text
