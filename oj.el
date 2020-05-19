@@ -100,7 +100,9 @@ optional arguments:
   :type '(repeat string))
 
 (defcustom oj-test-args '()
-  "Args for `oj-test'. Note that the runtime command (`-c') is detected automatically.
+  "Args for `oj-test'.
+
+Note that the runtime command (`-c') is detected automatically.
 
 usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY] [-m
                {simple,side-by-side}] [-S] [--no-rstrip]
