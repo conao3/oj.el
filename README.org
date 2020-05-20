@@ -216,6 +216,10 @@ If your code pass testcases, get below output in =*oj*= buffer.
   [+] test success: 3 cases
 #+end_src
 
+Compiler command is automatically detected using the =quickrun=
+package. You may use =quickrun-add-command= to add or override
+commands.
+
 ** oj-submit
 =M-x oj-submit= submit your code to online judge.
 (The first time, you need =M-x oj-login= per online judges.)
@@ -272,7 +276,7 @@ If your code pass testcases, get below output in =*oj*= buffer.
 - oj-test-args :: Args for =oj test=.  (default =nil=)
 
   #+begin_src text
-    Args for `oj-test'.
+    Args for `oj-test'. Note that the runtime command (`-c') is detected automatically.
 
     usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY] [-m
                    {simple,side-by-side}] [-S] [--no-rstrip]
@@ -511,3 +515,4 @@ Below operation flow is recommended.
 - Naoya Yamashita ([[https://github.com/conao3][conao3]])
 
 ** Contributors
+- zk-phi ([[https://github.com/zk-phi][zk-phi]])
