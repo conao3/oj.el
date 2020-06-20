@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  Naoya Yamashita
 
 ;; Author: Naoya Yamashita <conao3@gmail.com>
-;; Version: 1.0.2
+;; Version: 1.0.3
 ;; Keywords: convenience
 ;; Package-Requires: ((emacs "26.1") (quickrun "2.2"))
 ;; URL: https://github.com/conao3/oj.el
