@@ -446,6 +446,7 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
 
 ;;; Main
 
+;;;###autoload
 (defun oj-install-packages ()
   "Install `oj', `oj-template', `selenium' pip package via `pip3'."
   (interactive)
@@ -461,6 +462,7 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
         (error "Missing `pip3'.  Please ensure Emacs's PATH and the installing"))
       (oj--exec-script (format "pip3 install %s" (cdr elm))))))
 
+;;;###autoload
 (defun oj-open-shell ()
   "Open shell to controll `oj'."
   (interactive)
@@ -471,6 +473,7 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
     (make-comint-in-buffer "oj" oj-buffer shell-file-name))
   (display-buffer oj-buffer))
 
+;;;###autoload
 (defun oj-login (name)
   "Login online-judge system.
 
@@ -486,6 +489,7 @@ NAME is also whole URL to login."
       (when oj-login-args
         (format " %s" (mapconcat #'identity oj-login-args " ")))))))
 
+;;;###autoload
 (defun oj-prepare (name)
   "Prepare new NAME working folder."
   (interactive
@@ -502,6 +506,7 @@ NAME is also whole URL to login."
       (when oj-prepare-args
         (format " %s" (mapconcat #'identity oj-prepare-args " ")))))))
 
+;;;###autoload
 (defun oj-test ()
   "Run test."
   (interactive)
@@ -522,6 +527,7 @@ NAME is also whole URL to login."
         (format " %s" (mapconcat #'identity oj-test-args " ")))
       " -c '" (format-spec (if (consp exec) (car exec) exec) spec) "'"))))
 
+;;;###autoload
 (defun oj-submit ()
   "Submit code."
   (interactive)
