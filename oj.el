@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  Naoya Yamashita
 
 ;; Author: Naoya Yamashita <conao3@gmail.com>
-;; Version: 1.0.3
+;; Version: 1.0.4
 ;; Keywords: convenience
 ;; Package-Requires: ((emacs "26.1") (quickrun "2.2"))
 ;; URL: https://github.com/conao3/oj.el
@@ -169,7 +169,7 @@ tips:
 (defcustom oj-submit-args '("-y")
   "Args for `oj-submit'.
 
-Note: --guess-cxx-compiler and --guess-python-compiler is guessed
+Note: --guess-cxx-compiler and --guess-python-interpreter is guessed
 from `oj-compiler-c' or `oj-compiler-python' or `quickrun' default.
 
 usage: oj submit [-h] [-l LANGUAGE] [--no-guess] [-g]
@@ -544,7 +544,7 @@ NAME is also whole URL to login."
         " --guess-cxx-compiler clang")
       (when (or (string= "pypy" oj-compiler-python)
                 (string-match "pypy" (alist-get :command alist)))
-        " --guess-cxx-compiler pypy")))))
+        " --guess-python-interpreter pypy")))))
 
 (provide 'oj)
 
