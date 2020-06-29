@@ -480,6 +480,15 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
   (display-buffer oj-buffer))
 
 ;;;###autoload
+(defun oj-open-home-dir (&optional contest)
+  "Open `oj-home-dir'/CONTEST."
+  (interactive)
+  (let ((dir (expand-file-name (or contest "") oj-home-dir)))
+    (unless (file-directory-p dir)
+      (make-directory dir))
+    (dired dir)))
+
+;;;###autoload
 (defun oj-login (name)
   "Login online-judge system.
 
@@ -503,14 +512,16 @@ NAME is also whole URL to login."
           (format "Contest name (shortcode like `1349' or `1349/A' for %s, or URL): " oj-default-online-judge))))
   (let* ((url (if (string-prefix-p "http" name) name (oj--shortname-to-url name)))
          (dirs (oj--url-to-dirs url))
-         (path (expand-file-name (mapconcat #'identity dirs "/") oj-home-dir)))
+         (contestdir (mapconcat #'identity dirs "/"))
+         (path (expand-file-name contestdir oj-home-dir)))
     (oj--exec-script
      (format "mkdir -p %s && cd %s" path path))
     (oj--exec-script
      (concat
       (format "oj-prepare %s" url)
       (when oj-prepare-args
-        (format " %s" (mapconcat #'identity oj-prepare-args " ")))))))
+        (format " %s" (mapconcat #'identity oj-prepare-args " ")))))
+    (oj-open-home-dir contestdir)))
 
 ;;;###autoload
 (defun oj-test ()
