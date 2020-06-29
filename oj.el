@@ -443,6 +443,12 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
          (otherwise
           (error "Slash input (%s) for %s is not supported" shortname judge*)))))))
 
+(defun oj--parent-dir (path)
+  "Return the parent directory to PATH."
+  (let ((dir (directory-file-name (expand-file-name path default-directory))))
+    (directory-file-name
+     (file-name-directory dir))))
+
 
 ;;; Main
 
@@ -545,6 +551,46 @@ NAME is also whole URL to login."
       (when (or (string= "pypy" oj-compiler-python)
                 (string-match "pypy" (alist-get :command alist)))
         " --guess-python-interpreter pypy")))))
+
+;;;###autoload
+(defun oj-next ()
+  "Open source code for next task."
+  (interactive)
+  (let* ((currentfile (file-name-nondirectory (buffer-file-name)))
+         (currenttask (file-name-nondirectory (oj--parent-dir (buffer-file-name))))
+         (contestdir (oj--parent-dir (oj--parent-dir (buffer-file-name)))))
+    (when-let (nextdir (let ((default-directory contestdir))
+                         (thread-last (file-expand-wildcards "*")
+                           (cl-remove-if-not #'file-directory-p)
+                           (seq-sort #'string<)
+                           (member currenttask)
+                           (cadr))))
+      (when-let (file (thread-last nextdir
+                        (funcall (lambda (elm) (expand-file-name elm contestdir)))
+                        (funcall (lambda (elm) (expand-file-name currentfile elm)))))
+        (when (file-readable-p file)
+          (find-file file))))))
+
+;;;###autoload
+(defun oj-prev ()
+  "Open source code for prev task."
+  (interactive)
+  (let* ((currentfile (file-name-nondirectory (buffer-file-name)))
+         (currenttask (file-name-nondirectory (oj--parent-dir (buffer-file-name))))
+         (contestdir (oj--parent-dir (oj--parent-dir (buffer-file-name)))))
+    (when-let (prevdir (let ((default-directory contestdir))
+                         (thread-last (file-expand-wildcards "*")
+                           (cl-remove-if-not #'file-directory-p)
+                           (funcall (lambda (elm) (sort elm #'string<)))
+                           (funcall (lambda (elm)
+                                      (let ((pos (cl-position currenttask elm :test #'string=)))
+                                        (when (<= 1 pos)
+                                          (nth (- pos 1) elm))))))))
+      (when-let (file (thread-last prevdir
+                        (funcall (lambda (elm) (expand-file-name elm contestdir)))
+                        (funcall (lambda (elm) (expand-file-name currentfile elm)))))
+        (when (file-readable-p file)
+          (find-file file))))))
 
 (provide 'oj)
 
