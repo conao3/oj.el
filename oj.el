@@ -28,9 +28,10 @@
 
 ;;; Code:
 
+(require 'quickrun)
 (require 'format-spec)
 (require 'subr-x)
-(require 'quickrun)
+(require 'seq)
 
 (defgroup oj nil
   "Competitive programming tools client."
