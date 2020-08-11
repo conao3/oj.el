@@ -3,7 +3,7 @@
 ;; Copyright (C) 2020  Naoya Yamashita
 
 ;; Author: Naoya Yamashita <conao3@gmail.com>
-;; Version: 1.0.6
+;; Version: 1.0.7
 ;; Keywords: convenience
 ;; Package-Requires: ((emacs "26.1") (quickrun "2.2"))
 ;; URL: https://github.com/conao3/oj.el
@@ -28,9 +28,10 @@
 
 ;;; Code:
 
+(require 'quickrun)
 (require 'format-spec)
 (require 'subr-x)
-(require 'quickrun)
+(require 'seq)
 
 (defgroup oj nil
   "Competitive programming tools client."
