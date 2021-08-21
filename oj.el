@@ -540,14 +540,21 @@ NAME is also whole URL to login."
                        (quickrun--template-argument alist (buffer-file-name))))
          (exec (or (alist-get :exec alist)
                    (alist-get :exec quickrun--default-tmpl-alist))))
-    (while (and (consp exec) (cdr exec)) ; has more than two commands
-      (oj--exec-script (format-spec (pop exec) spec)))
-    (oj--exec-script
-     (concat
-      "oj test"
-      (when oj-test-args
-        (format " %s" (mapconcat #'identity oj-test-args " ")))
-      " -c '" (format-spec (if (consp exec) (car exec) exec) spec) "'"))))
+    (apply
+     #'oj--exec-script-multiple
+     (append
+      (when (consp exec)
+        (nreverse
+         (mapcar
+          (lambda (arg)
+            (format-spec arg spec))
+          (cdr (reverse exec)))))
+      (list
+       (concat
+        "oj test"
+        (when oj-test-args
+          (format " %s" (mapconcat #'identity oj-test-args " ")))
+        " -c '" (format-spec (if (consp exec) (car (last exec)) exec) spec) "'"))))))
 
 ;;;###autoload
 (defun oj-submit ()
