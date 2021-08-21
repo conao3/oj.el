@@ -288,6 +288,10 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
     (with-current-buffer oj-buffer
       (comint-send-input))))
 
+(defun oj--exec-script-multiple (&rest scripts)
+  "Exec all SCRIPTS joined by \" && \" in `oj-buffer'."
+  (oj--exec-script (string-join scripts " && ")))
+
 (defun oj--file-readable (file)
   "Return FILE if readable."
   (when (file-readable-p file) file))
