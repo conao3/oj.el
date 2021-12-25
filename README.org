@@ -95,7 +95,7 @@ You can install these tools via =M-x oj-install-packages=.
         (oj--exec-script (format "pip3 install %s" (cdr elm))))))
 #+end_src
 
-But if you want to install via this funciton, you can install them by your command-line shell.
+But if you dont't want to install via this funciton, you can install them by your command-line shell.
 
 #+begin_src shell
   pip3 install online-judge-tools
