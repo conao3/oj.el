@@ -288,9 +288,9 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
     (with-current-buffer oj-buffer
       (comint-send-input))))
 
-(defun oj--exec-script-multiple (&rest scripts)
-  "Exec all SCRIPTS joined by \" && \" in `oj-buffer'."
-  (oj--exec-script (string-join scripts " && ")))
+(defun oj--join-scripts (&rest scripts)
+  "Join all SCRIPTS with \" && \"."
+   (string-join scripts " && "))
 
 (defun oj--file-readable (file)
   "Return FILE if readable."
@@ -540,21 +540,22 @@ NAME is also whole URL to login."
                        (quickrun--template-argument alist (buffer-file-name))))
          (exec (or (alist-get :exec alist)
                    (alist-get :exec quickrun--default-tmpl-alist))))
-    (apply
-     #'oj--exec-script-multiple
-     (append
-      (when (consp exec)
-        (nreverse
-         (mapcar
-          (lambda (arg)
-            (format-spec arg spec))
-          (cdr (reverse exec)))))
-      (list
-       (concat
-        "oj test"
-        (when oj-test-args
-          (format " %s" (mapconcat #'identity oj-test-args " ")))
-        " -c '" (format-spec (if (consp exec) (car (last exec)) exec) spec) "'"))))))
+    (oj--exec-script
+     (apply
+      #'oj--join-scripts
+      (append
+       (when (consp exec)
+         (nreverse
+          (mapcar
+           (lambda (arg)
+             (format-spec arg spec))
+           (cdr (reverse exec)))))
+       (list
+        (concat
+         "oj test"
+         (when oj-test-args
+           (format " %s" (mapconcat #'identity oj-test-args " ")))
+         " -c '" (format-spec (if (consp exec) (car (last exec)) exec) spec) "'")))))))
 
 ;;;###autoload
 (defun oj-submit ()
