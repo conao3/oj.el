@@ -545,11 +545,10 @@ NAME is also whole URL to login."
       #'oj--join-scripts
       (append
        (when (consp exec)
-         (nreverse
-          (mapcar
-           (lambda (arg)
-             (format-spec arg spec))
-           (cdr (reverse exec)))))
+         (mapcar
+          (lambda (arg)
+            (format-spec arg spec))
+          (nreverse (cdr (reverse exec)))))
        (list
         (concat
          "oj test"
