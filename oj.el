@@ -288,6 +288,10 @@ NOTE: online-judge symbol MUST NOT include slash (\"/\").")
     (with-current-buffer oj-buffer
       (comint-send-input))))
 
+(defun oj--join-scripts (&rest scripts)
+  "Join all SCRIPTS with \" && \"."
+   (string-join scripts " && "))
+
 (defun oj--file-readable (file)
   "Return FILE if readable."
   (when (file-readable-p file) file))
@@ -536,14 +540,21 @@ NAME is also whole URL to login."
                        (quickrun--template-argument alist (buffer-file-name))))
          (exec (or (alist-get :exec alist)
                    (alist-get :exec quickrun--default-tmpl-alist))))
-    (while (and (consp exec) (cdr exec)) ; has more than two commands
-      (oj--exec-script (format-spec (pop exec) spec)))
     (oj--exec-script
-     (concat
-      "oj test"
-      (when oj-test-args
-        (format " %s" (mapconcat #'identity oj-test-args " ")))
-      " -c '" (format-spec (if (consp exec) (car exec) exec) spec) "'"))))
+     (apply
+      #'oj--join-scripts
+      (append
+       (when (consp exec)
+         (mapcar
+          (lambda (arg)
+            (format-spec arg spec))
+          (nreverse (cdr (reverse exec)))))
+       (list
+        (concat
+         "oj test"
+         (when oj-test-args
+           (format " %s" (mapconcat #'identity oj-test-args " ")))
+         " -c '" (format-spec (if (consp exec) (car (last exec)) exec) spec) "'")))))))
 
 ;;;###autoload
 (defun oj-submit ()
