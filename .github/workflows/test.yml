@@ -19,7 +19,7 @@ jobs:
           - emacs_version: 'snapshot'
             allow_failure: true
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v6
     - uses: purcell/setup-emacs@master
       with:
         version: ${{ matrix.emacs_version }}
