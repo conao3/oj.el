@@ -5,7 +5,7 @@ version: 'v0.0.3'
 workflows:
     '.github/workflows/test.yml':
         - 'actions/checkout@v7.0.1'
-        - 'cask/setup-cask@master'
+        - 'cask/setup-cask@v1.1.0'
         - 'purcell/setup-emacs@v8.0'
 dependencies:
     'actions/checkout@v7.0.1':
@@ -13,9 +13,9 @@ dependencies:
         commit: 'sha1-3d3c42e5aac5ba805825da76410c181273ba90b1'
         owner_id: 44036562
         repo_id: 197814629
-    'cask/setup-cask@master':
-        ref: 'master'
-        commit: 'sha1-3f143bc90edc2b8eb2ebde69bd59eeea4967975e'
+    'cask/setup-cask@v1.1.0':
+        ref: 'v1.1.0'
+        commit: 'sha1-5f30ab8785c6b8c029220f9184820f64db6669f3'
         owner_id: 5344792
         repo_id: 223546549
     'purcell/setup-emacs@v8.0':
